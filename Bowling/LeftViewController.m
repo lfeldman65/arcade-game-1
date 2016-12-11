@@ -39,11 +39,11 @@ BOOL soundIsOn2;
     soundIsOn2 = [soundOn boolValue];
 
     NSString* resourcePath = [[NSBundle mainBundle] resourcePath];
-    resourcePath = [resourcePath stringByAppendingString:@"/rocketFlight.mp3"];
+  //  resourcePath = [resourcePath stringByAppendingString:@"/rocketFlight.mp3"];
     NSLog(@"Path to play: %@", resourcePath);
     NSError* err;
     
-    self.ambientPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:resourcePath] error:&err];
+ //   self.ambientPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:resourcePath] error:&err];
     
     if(err)
     {
@@ -51,10 +51,10 @@ BOOL soundIsOn2;
     }
     else
     {
-        self.ambientPlayer.delegate = self;
-        self.ambientPlayer.numberOfLoops = -1;
-        self.ambientPlayer.currentTime = 0;
-        self.ambientPlayer.volume = 1.0;
+     //   self.ambientPlayer.delegate = self;
+     //   self.ambientPlayer.numberOfLoops = -1;
+     //   self.ambientPlayer.currentTime = 0;
+     //   self.ambientPlayer.volume = 1.0;
     }
 
 }
@@ -68,7 +68,7 @@ BOOL soundIsOn2;
     isInLeft = true;
     if(soundIsOn2)
     {
-        [self.ambientPlayer play];
+      //  [self.ambientPlayer play];
     }
 }
 
@@ -88,7 +88,7 @@ BOOL soundIsOn2;
     isInLeft = false;
     if(soundIsOn2)
     {
-        [self.ambientPlayer pause];
+     //   [self.ambientPlayer pause];
     }
 }
 

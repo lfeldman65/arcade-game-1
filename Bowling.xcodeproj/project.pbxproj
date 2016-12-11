@@ -21,12 +21,9 @@
 		110E80C31B168D0900DF989C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110E80C21B168D0900DF989C /* iAd.framework */; };
 		11C1BEF21B179AC200DF06A0 /* Shop.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C1BEF01B179AC200DF06A0 /* Shop.m */; };
 		11C1BEF41B179AF300DF06A0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C1BEF31B179AF300DF06A0 /* StoreKit.framework */; };
+		510759C21DFE181300018B0E /* chopperShort.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 510759C11DFE181300018B0E /* chopperShort.mp3 */; };
 		5107C9771DD2933000411FFA /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5107C9761DD2933000411FFA /* TutorialViewController.m */; };
 		5107C9851DD3746100411FFA /* tutorial.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5107C9841DD3746100411FFA /* tutorial.plist */; };
-		512BC0561DE90A8B0018FD71 /* alienBG.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 512BC0541DE90A8B0018FD71 /* alienBG.mp3 */; };
-		512BC0571DE90A8B0018FD71 /* Cosmic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 512BC0551DE90A8B0018FD71 /* Cosmic.mp3 */; };
-		512BC0591DEA51F30018FD71 /* gameOver.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 512BC0581DEA51F30018FD71 /* gameOver.mp3 */; };
-		512BC05B1DEA5AD30018FD71 /* whoosh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 512BC05A1DEA5AD30018FD71 /* whoosh.mp3 */; };
 		514D2A191DBEA59900A96118 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 514D2A181DBEA59900A96118 /* CollectionViewCell.m */; };
 		5157839F1DCA24BE00FB7A97 /* 2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5157837F1DCA24BE00FB7A97 /* 2.plist */; };
 		515783A01DCA24BE00FB7A97 /* 3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 515783801DCA24BE00FB7A97 /* 3.plist */; };
@@ -67,7 +64,6 @@
 		5157BF651DCA69ED00A73497 /* 39.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5157BF5F1DCA69ED00A73497 /* 39.plist */; };
 		5157BF661DCA69ED00A73497 /* 40.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5157BF601DCA69ED00A73497 /* 40.plist */; };
 		518BFE701DDE445900322CD2 /* LeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 518BFE6F1DDE445900322CD2 /* LeftViewController.m */; };
-		518BFE731DDE456500322CD2 /* RightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 518BFE721DDE456500322CD2 /* RightViewController.m */; };
 		51C66CC81DD4D2BC004070B1 /* 44.plist in Resources */ = {isa = PBXBuildFile; fileRef = 51C66CBE1DD4D2BB004070B1 /* 44.plist */; };
 		51C66CC91DD4D2BC004070B1 /* 45.plist in Resources */ = {isa = PBXBuildFile; fileRef = 51C66CBF1DD4D2BB004070B1 /* 45.plist */; };
 		51C66CCA1DD4D2BC004070B1 /* 46.plist in Resources */ = {isa = PBXBuildFile; fileRef = 51C66CC01DD4D2BB004070B1 /* 46.plist */; };
@@ -109,8 +105,6 @@
 		51C66D111DD51308004070B1 /* 79.plist in Resources */ = {isa = PBXBuildFile; fileRef = 51C66D071DD51308004070B1 /* 79.plist */; };
 		51C66D121DD51308004070B1 /* 80.plist in Resources */ = {isa = PBXBuildFile; fileRef = 51C66D081DD51308004070B1 /* 80.plist */; };
 		51C66D141DD52523004070B1 /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51C66D131DD52523004070B1 /* iPad.storyboard */; };
-		51DA09711DEBA7E500D951D3 /* rocketFlight.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51DA09701DEBA7E500D951D3 /* rocketFlight.mp3 */; };
-		51DA09731DEBA90B00D951D3 /* shooting.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51DA09721DEBA90B00D951D3 /* shooting.mp3 */; };
 		51DFBA581DDCCF0D00DBF82D /* PlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51DFBA571DDCCF0D00DBF82D /* PlayViewController.m */; };
 		51FD79171DDB633C00C676BE /* 81.plist in Resources */ = {isa = PBXBuildFile; fileRef = 51FD79031DDB633C00C676BE /* 81.plist */; };
 		51FD79181DDB633C00C676BE /* 82.plist in Resources */ = {isa = PBXBuildFile; fileRef = 51FD79041DDB633C00C676BE /* 82.plist */; };
@@ -178,13 +172,10 @@
 		11C1BEF01B179AC200DF06A0 /* Shop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Shop.m; sourceTree = "<group>"; };
 		11C1BEF11B179AC200DF06A0 /* Shop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shop.h; sourceTree = "<group>"; };
 		11C1BEF31B179AF300DF06A0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		510759C11DFE181300018B0E /* chopperShort.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chopperShort.mp3; sourceTree = "<group>"; };
 		5107C9751DD2933000411FFA /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
 		5107C9761DD2933000411FFA /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
 		5107C9841DD3746100411FFA /* tutorial.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tutorial.plist; sourceTree = "<group>"; };
-		512BC0541DE90A8B0018FD71 /* alienBG.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alienBG.mp3; sourceTree = "<group>"; };
-		512BC0551DE90A8B0018FD71 /* Cosmic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Cosmic.mp3; sourceTree = "<group>"; };
-		512BC0581DEA51F30018FD71 /* gameOver.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameOver.mp3; sourceTree = "<group>"; };
-		512BC05A1DEA5AD30018FD71 /* whoosh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = whoosh.mp3; sourceTree = "<group>"; };
 		514D2A171DBEA59900A96118 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		514D2A181DBEA59900A96118 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		5157837F1DCA24BE00FB7A97 /* 2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = 2.plist; sourceTree = "<group>"; };
@@ -227,8 +218,6 @@
 		5157BF601DCA69ED00A73497 /* 40.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = 40.plist; sourceTree = "<group>"; };
 		518BFE6E1DDE445900322CD2 /* LeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftViewController.h; sourceTree = "<group>"; };
 		518BFE6F1DDE445900322CD2 /* LeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftViewController.m; sourceTree = "<group>"; };
-		518BFE711DDE456500322CD2 /* RightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RightViewController.h; sourceTree = "<group>"; };
-		518BFE721DDE456500322CD2 /* RightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RightViewController.m; sourceTree = "<group>"; };
 		51C66CBE1DD4D2BB004070B1 /* 44.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = 44.plist; sourceTree = "<group>"; };
 		51C66CBF1DD4D2BB004070B1 /* 45.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = 45.plist; sourceTree = "<group>"; };
 		51C66CC01DD4D2BB004070B1 /* 46.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = 46.plist; sourceTree = "<group>"; };
@@ -270,8 +259,6 @@
 		51C66D071DD51308004070B1 /* 79.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = 79.plist; sourceTree = "<group>"; };
 		51C66D081DD51308004070B1 /* 80.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = 80.plist; sourceTree = "<group>"; };
 		51C66D131DD52523004070B1 /* iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPad.storyboard; sourceTree = "<group>"; };
-		51DA09701DEBA7E500D951D3 /* rocketFlight.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = rocketFlight.mp3; sourceTree = "<group>"; };
-		51DA09721DEBA90B00D951D3 /* shooting.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shooting.mp3; sourceTree = "<group>"; };
 		51DFBA561DDCCF0D00DBF82D /* PlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayViewController.h; sourceTree = "<group>"; };
 		51DFBA571DDCCF0D00DBF82D /* PlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayViewController.m; sourceTree = "<group>"; };
 		51FD79031DDB633C00C676BE /* 81.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = 81.plist; sourceTree = "<group>"; };
@@ -373,6 +360,7 @@
 		110E80761B161B4000DF989C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				510759C11DFE181300018B0E /* chopperShort.mp3 */,
 				110E80771B161B4000DF989C /* Info.plist */,
 				110E80781B161B4000DF989C /* main.m */,
 			);
@@ -446,12 +434,6 @@
 		674642FA1DC15ED3006387A6 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				51DA09721DEBA90B00D951D3 /* shooting.mp3 */,
-				51DA09701DEBA7E500D951D3 /* rocketFlight.mp3 */,
-				512BC05A1DEA5AD30018FD71 /* whoosh.mp3 */,
-				512BC0581DEA51F30018FD71 /* gameOver.mp3 */,
-				512BC0541DE90A8B0018FD71 /* alienBG.mp3 */,
-				512BC0551DE90A8B0018FD71 /* Cosmic.mp3 */,
 				110E808A1B161B4100DF989C /* LaunchScreen.xib */,
 				110E80851B161B4100DF989C /* Main.storyboard */,
 				51C66D131DD52523004070B1 /* iPad.storyboard */,
@@ -471,8 +453,6 @@
 				51DFBA571DDCCF0D00DBF82D /* PlayViewController.m */,
 				518BFE6E1DDE445900322CD2 /* LeftViewController.h */,
 				518BFE6F1DDE445900322CD2 /* LeftViewController.m */,
-				518BFE711DDE456500322CD2 /* RightViewController.h */,
-				518BFE721DDE456500322CD2 /* RightViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -734,6 +714,7 @@
 				515783AF1DCA24BE00FB7A97 /* 19.plist in Resources */,
 				51C66CFD1DD50F7F004070B1 /* 69.plist in Resources */,
 				51C66CE61DD4DFEB004070B1 /* 56.plist in Resources */,
+				510759C21DFE181300018B0E /* chopperShort.mp3 in Resources */,
 				515783B11DCA24BE00FB7A97 /* 21.plist in Resources */,
 				51C66CCA1DD4D2BC004070B1 /* 46.plist in Resources */,
 				51C66CE11DD4DFEB004070B1 /* 51.plist in Resources */,
@@ -742,20 +723,16 @@
 				51C66D0A1DD51308004070B1 /* 72.plist in Resources */,
 				51FD791F1DDB633C00C676BE /* 89.plist in Resources */,
 				51C66CFA1DD50F7F004070B1 /* 66.plist in Resources */,
-				512BC0561DE90A8B0018FD71 /* alienBG.mp3 in Resources */,
 				51FD79181DDB633C00C676BE /* 82.plist in Resources */,
 				51C66CF71DD50F7F004070B1 /* 63.plist in Resources */,
-				512BC05B1DEA5AD30018FD71 /* whoosh.mp3 in Resources */,
 				51C66D0C1DD51308004070B1 /* 74.plist in Resources */,
 				51C66CE41DD4DFEB004070B1 /* 54.plist in Resources */,
 				51FD79191DDB633C00C676BE /* 83.plist in Resources */,
 				51C66D0D1DD51308004070B1 /* 75.plist in Resources */,
 				51C66D091DD51308004070B1 /* 71.plist in Resources */,
 				51C66CF81DD50F7F004070B1 /* 64.plist in Resources */,
-				512BC0591DEA51F30018FD71 /* gameOver.mp3 in Resources */,
 				515783BC1DCA24BE00FB7A97 /* 32.plist in Resources */,
 				515783A91DCA24BE00FB7A97 /* 13.plist in Resources */,
-				51DA09711DEBA7E500D951D3 /* rocketFlight.mp3 in Resources */,
 				515783B71DCA24BE00FB7A97 /* 27.plist in Resources */,
 				515783A31DCA24BE00FB7A97 /* 6.plist in Resources */,
 				51C66D111DD51308004070B1 /* 79.plist in Resources */,
@@ -777,7 +754,6 @@
 				51C66D101DD51308004070B1 /* 78.plist in Resources */,
 				51FD79211DDB633C00C676BE /* 91.plist in Resources */,
 				110E80891B161B4100DF989C /* Images.xcassets in Resources */,
-				512BC0571DE90A8B0018FD71 /* Cosmic.mp3 in Resources */,
 				515783BB1DCA24BE00FB7A97 /* 31.plist in Resources */,
 				51C66CD41DD4DB5D004070B1 /* 41.plist in Resources */,
 				51C66D0E1DD51308004070B1 /* 76.plist in Resources */,
@@ -817,7 +793,6 @@
 				51C66CCE1DD4D2BC004070B1 /* 50.plist in Resources */,
 				51FD791A1DDB633C00C676BE /* 84.plist in Resources */,
 				51C66CE91DD4DFEB004070B1 /* 59.plist in Resources */,
-				51DA09731DEBA90B00D951D3 /* shooting.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -840,7 +815,6 @@
 				5107C9771DD2933000411FFA /* TutorialViewController.m in Sources */,
 				673B2E091DC6B68100147D8F /* SSZipArchive.m in Sources */,
 				51DFBA581DDCCF0D00DBF82D /* PlayViewController.m in Sources */,
-				518BFE731DDE456500322CD2 /* RightViewController.m in Sources */,
 				11C1BEF21B179AC200DF06A0 /* Shop.m in Sources */,
 				110E80C01B16863700DF989C /* GameCenterManager.m in Sources */,
 				110E80BE1B16863700DF989C /* Reachability.m in Sources */,
@@ -990,7 +964,7 @@
 				DEVELOPMENT_TEAM = 9Y9N8HRKV2;
 				INFOPLIST_FILE = Bowling/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.lfeldman.asteroids;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lfeldman.chopper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1008,7 +982,7 @@
 				DEVELOPMENT_TEAM = 9Y9N8HRKV2;
 				INFOPLIST_FILE = Bowling/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.lfeldman.asteroids;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lfeldman.chopper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

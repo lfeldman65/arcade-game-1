@@ -78,7 +78,7 @@ double screenHeight2;
     BOOL soundIsOn = [soundOn boolValue];
     
     NSString* resourcePath = [[NSBundle mainBundle] resourcePath];
-    resourcePath = [resourcePath stringByAppendingString:@"/alienBG.mp3"];
+    resourcePath = [resourcePath stringByAppendingString:@"/chopperShort.mp3"];
     NSLog(@"Path to play: %@", resourcePath);
     NSError* err;
     

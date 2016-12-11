@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "LeftViewController.h"
-#import "RightViewController.h"
 #import "AppDelegate.h"
 
 @interface PlayViewController : UIViewController <AVAudioPlayerDelegate>
