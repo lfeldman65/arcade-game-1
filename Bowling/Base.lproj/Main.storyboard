@@ -18,10 +18,6 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nightSky" translatesAutoresizingMaskIntoConstraints="NO" id="hhm-Fu-rko" userLabel="bg image"/>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ufo2" translatesAutoresizingMaskIntoConstraints="NO" id="JOI-ZN-fZb">
-                                <frame key="frameInset" minX="10" minY="169" width="80" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ufo4" translatesAutoresizingMaskIntoConstraints="NO" id="lod-fK-NeG">
                                 <frame key="frameInset" minX="20" minY="257" width="70" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -147,7 +143,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="alien1Image" destination="JOI-ZN-fZb" id="3Zo-L4-mY3"/>
                         <outlet property="alien2Image" destination="lod-fK-NeG" id="Qkd-bP-Tlb"/>
                         <outlet property="alien3Image" destination="Jqw-sS-sp4" id="wpk-wI-gsg"/>
                         <outlet property="alien4Image" destination="1cA-eK-7bW" id="jpI-mS-eOQ"/>
@@ -178,15 +173,15 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bomb" translatesAutoresizingMaskIntoConstraints="NO" id="e4R-6l-897">
-                                <frame key="frameInset" minX="225" minY="297" width="20" height="10"/>
+                                <frame key="frameInset" minX="85" minY="312" width="20" height="10"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ammo" translatesAutoresizingMaskIntoConstraints="NO" id="HoL-n4-Lws">
-                                <frame key="frameInset" minX="88" minY="418" width="10" height="10"/>
+                                <frame key="frameInset" minX="163" minY="261" width="17" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="chopperRight" translatesAutoresizingMaskIntoConstraints="NO" id="zgX-14-X4d">
-                                <frame key="frameInset" minX="169" minY="249" width="79" height="40"/>
+                                <frame key="frameInset" minX="56" minY="249" width="79" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kJ7-sF-dOB">
@@ -236,16 +231,16 @@
                                 </constraints>
                             </imageView>
                             <containerView opaque="NO" alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vh2-KL-oeX">
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="NJa-2g-4kZ"/>
-                                    <constraint firstAttribute="width" constant="150" id="Osw-wd-ICU"/>
+                                    <constraint firstAttribute="height" constant="140" id="NJa-2g-4kZ"/>
+                                    <constraint firstAttribute="width" constant="140" id="Osw-wd-ICU"/>
                                 </constraints>
                                 <connections>
                                     <segue destination="FTU-1s-dJk" kind="embed" id="WOo-BX-wrr"/>
                                 </connections>
                             </containerView>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HYv-B5-dCG">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HYv-B5-dCG">
                                 <constraints>
                                     <constraint firstAttribute="width" constant="120" id="lgS-RJ-wjI"/>
                                 </constraints>
@@ -259,10 +254,10 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kps-wi-6Qk">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="46" id="GmA-tg-bKw"/>
-                                    <constraint firstAttribute="height" constant="54" id="Oq9-iv-Gt6"/>
+                                    <constraint firstAttribute="width" constant="110" id="GmA-tg-bKw"/>
+                                    <constraint firstAttribute="height" constant="110" id="Oq9-iv-Gt6"/>
                                 </constraints>
-                                <state key="normal" title="Gun">
+                                <state key="normal" title="Gun" backgroundImage="yellow">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -271,10 +266,11 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3dN-Tm-BX3">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="46" id="Z8I-R0-gGP"/>
-                                    <constraint firstAttribute="height" constant="54" id="e34-JO-I0H"/>
+                                    <constraint firstAttribute="width" constant="110" id="Z8I-R0-gGP"/>
+                                    <constraint firstAttribute="height" constant="110" id="e34-JO-I0H"/>
                                 </constraints>
-                                <state key="normal" title="Bomb">
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" title="Bomb" backgroundImage="red">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -283,12 +279,12 @@
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="compass" translatesAutoresizingMaskIntoConstraints="NO" id="PvM-qm-qbn" userLabel="arrows left">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="h9X-Z9-bhE"/>
-                                    <constraint firstAttribute="height" constant="150" id="wfw-DZ-DpH"/>
+                                    <constraint firstAttribute="width" constant="140" id="h9X-Z9-bhE"/>
+                                    <constraint firstAttribute="height" constant="140" id="wfw-DZ-DpH"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Move" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Za-0u-ang">
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -300,6 +296,14 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="missile" translatesAutoresizingMaskIntoConstraints="NO" id="Cdo-nj-lU9">
+                                <frame key="frameInset" minX="234" minY="249" width="60" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="enemyChopper" translatesAutoresizingMaskIntoConstraints="NO" id="h98-bK-x8b">
+                                <frame key="frameInset" minX="200" minY="404" width="123" height="53"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -307,6 +311,7 @@
                             <constraint firstAttribute="trailing" secondItem="uaf-ck-XR1" secondAttribute="trailing" constant="12" id="6EP-Kp-R88"/>
                             <constraint firstItem="vh2-KL-oeX" firstAttribute="centerY" secondItem="5Za-0u-ang" secondAttribute="centerY" id="6jO-ry-oJY"/>
                             <constraint firstItem="HYv-B5-dCG" firstAttribute="top" secondItem="K4W-fy-MoX" secondAttribute="bottom" constant="173" id="72V-X3-tCT"/>
+                            <constraint firstItem="Kps-wi-6Qk" firstAttribute="leading" secondItem="PvM-qm-qbn" secondAttribute="trailing" constant="10" id="7gv-sg-QtA"/>
                             <constraint firstItem="kJ7-sF-dOB" firstAttribute="leading" secondItem="7IR-lg-j0I" secondAttribute="leading" constant="6" id="Dvg-xK-i3z"/>
                             <constraint firstItem="kJ7-sF-dOB" firstAttribute="top" secondItem="K4W-fy-MoX" secondAttribute="bottom" id="FV6-TV-XIe"/>
                             <constraint firstItem="Kps-wi-6Qk" firstAttribute="centerY" secondItem="49m-xS-87L" secondAttribute="centerY" id="FYJ-lk-c5G"/>
@@ -318,16 +323,15 @@
                             <constraint firstItem="Bde-Ai-9kQ" firstAttribute="centerX" secondItem="7IR-lg-j0I" secondAttribute="centerX" constant="25" id="W5T-Ib-h7a"/>
                             <constraint firstItem="PvM-qm-qbn" firstAttribute="centerX" secondItem="vh2-KL-oeX" secondAttribute="centerX" id="Y50-vR-97J"/>
                             <constraint firstItem="Bde-Ai-9kQ" firstAttribute="centerY" secondItem="box-ex-Hc7" secondAttribute="centerY" id="Zz9-N0-9pK"/>
-                            <constraint firstAttribute="trailing" secondItem="3dN-Tm-BX3" secondAttribute="trailing" constant="52" id="c29-DK-get"/>
-                            <constraint firstItem="3dN-Tm-BX3" firstAttribute="leading" secondItem="Kps-wi-6Qk" secondAttribute="trailing" constant="52" id="cWJ-xU-PbR"/>
+                            <constraint firstAttribute="trailing" secondItem="3dN-Tm-BX3" secondAttribute="trailing" id="c29-DK-get"/>
                             <constraint firstItem="5Za-0u-ang" firstAttribute="centerX" secondItem="vh2-KL-oeX" secondAttribute="centerX" id="kyF-e1-EK6"/>
                             <constraint firstItem="box-ex-Hc7" firstAttribute="leading" secondItem="Bde-Ai-9kQ" secondAttribute="trailing" id="l9b-au-Nbe"/>
                             <constraint firstItem="PvM-qm-qbn" firstAttribute="centerY" secondItem="vh2-KL-oeX" secondAttribute="centerY" id="mDa-JX-vqu"/>
                             <constraint firstItem="vPB-81-hKN" firstAttribute="top" secondItem="K4W-fy-MoX" secondAttribute="bottom" constant="7" id="nTd-rq-UwP"/>
                             <constraint firstItem="vPB-81-hKN" firstAttribute="centerY" secondItem="Bde-Ai-9kQ" secondAttribute="centerY" id="ojh-ji-TDA"/>
-                            <constraint firstItem="vh2-KL-oeX" firstAttribute="leading" secondItem="7IR-lg-j0I" secondAttribute="leading" id="r2G-Kl-VyJ"/>
+                            <constraint firstItem="vh2-KL-oeX" firstAttribute="leading" secondItem="7IR-lg-j0I" secondAttribute="leading" constant="5" id="r2G-Kl-VyJ"/>
                             <constraint firstItem="3dN-Tm-BX3" firstAttribute="centerY" secondItem="49m-xS-87L" secondAttribute="centerY" id="snf-r6-Q4k"/>
-                            <constraint firstItem="Htr-hS-RJF" firstAttribute="top" secondItem="vh2-KL-oeX" secondAttribute="bottom" id="t8g-jE-csh"/>
+                            <constraint firstItem="Htr-hS-RJF" firstAttribute="top" secondItem="vh2-KL-oeX" secondAttribute="bottom" constant="5" id="t8g-jE-csh"/>
                             <constraint firstItem="Htr-hS-RJF" firstAttribute="top" secondItem="49m-xS-87L" secondAttribute="bottom" id="yaD-Zp-Q1z"/>
                             <constraint firstItem="box-ex-Hc7" firstAttribute="centerY" secondItem="724-kR-gWB" secondAttribute="centerY" id="ydC-G3-99J"/>
                         </constraints>
@@ -336,8 +340,10 @@
                         <outlet property="ammoImage" destination="HoL-n4-Lws" id="SbF-9K-QbX"/>
                         <outlet property="bombImage" destination="e4R-6l-897" id="LPW-9I-FEh"/>
                         <outlet property="character" destination="zgX-14-X4d" id="ODB-hk-s8g"/>
+                        <outlet property="enemyChopper" destination="h98-bK-x8b" id="V6u-SZ-d02"/>
                         <outlet property="fireballLabel" destination="box-ex-Hc7" id="LDl-Tp-zhY"/>
                         <outlet property="leftView" destination="vh2-KL-oeX" id="Fj8-Qa-Nju"/>
+                        <outlet property="missileImage" destination="Cdo-nj-lU9" id="92J-MM-ej1"/>
                         <outlet property="playButton" destination="HYv-B5-dCG" id="sN5-Vd-gq1"/>
                         <outlet property="scoreLabel" destination="vPB-81-hKN" id="SbA-GV-ucg"/>
                         <outlet property="shieldLabel" destination="uaf-ck-XR1" id="BSS-iQ-HCJ"/>
@@ -574,7 +580,7 @@
                         <viewControllerLayoutGuide type="bottom" id="7a9-PG-bvB"/>
                     </layoutGuides>
                     <view key="view" alpha="0.20000000000000001" contentMode="scaleToFill" id="fD1-rn-bIE">
-                        <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                        <rect key="frame" x="0.0" y="0.0" width="140" height="140"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                 </viewController>
@@ -589,8 +595,11 @@
         <image name="bomb" width="960" height="558"/>
         <image name="chopperRight" width="960" height="480"/>
         <image name="compass" width="593" height="593"/>
+        <image name="enemyChopper" width="488" height="159"/>
         <image name="fireball" width="341" height="340"/>
+        <image name="missile" width="960" height="480"/>
         <image name="nightSky" width="1920" height="1279"/>
+        <image name="red" width="251" height="250"/>
         <image name="shield" width="720" height="720"/>
         <image name="shield2" width="640" height="720"/>
         <image name="spaceShip" width="468" height="597"/>
@@ -599,5 +608,6 @@
         <image name="ufo3" width="2400" height="1938"/>
         <image name="ufo4" width="600" height="600"/>
         <image name="windrose1" width="1969" height="1969"/>
+        <image name="yellow" width="252" height="250"/>
     </resources>
 </document>
