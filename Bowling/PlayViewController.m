@@ -10,18 +10,16 @@
 
 #define charSpeedScale 0.3
 #define ammoSpeed 20.0
+#define enemySpeed 5.0
+#define missileSpeed 10
 #define controlHeight 150.0
-#define maxMinSpeed 10
-#define testSpeed 0
 #define bottomAchieve 20000
 #define skyWidth 5000
 #define truckScore 100
-#define ufo2Score 200
-#define ufo3Score 300
-#define ufo4Score 400
+#define missileScore 1000
+#define enemyChopperScore 500
 #define gameTime .05
 #define offScreen -1000
-#define missileSpeed 10
 
 
 @interface PlayViewController ()
@@ -34,6 +32,8 @@
 
 @property (strong, nonatomic) IBOutlet UIImageView *character;
 @property (strong, nonatomic) UIImageView *fireChopper;
+@property (strong, nonatomic) UIImageView *flameMissile;
+@property (strong, nonatomic) UIImageView *flameEnemyChopper;
 
 @property (strong, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (strong, nonatomic) IBOutlet UILabel *shieldLabel;
@@ -209,14 +209,15 @@ CGPoint missileVector;
     self.scoreLabel.text = @"Score: 0";
     self.shieldLabel.text = @"100";
     self.fireballLabel.text = @"0";
-    self.character.center = CGPointMake(screenWidth/2, (screenHeight - controlHeight)/2);
+    self.character.center = CGPointMake(.2*screenWidth, (screenHeight - controlHeight)/2);
     self.ammoImage.center = CGPointMake(offScreen, offScreen);
     self.bombImage.center = CGPointMake(offScreen, offScreen);
-    self.missileImage.center = CGPointMake(screenWidth + 100, [self randomHeight]);
+    self.missileImage.center = CGPointMake(screenWidth + 300, [self randomHeight]);
+    self.enemyChopper.center = CGPointMake(screenWidth + 300, [self randomHeight]);
     
     self.truckArray = [NSMutableArray new];
     self.fireArray = [NSMutableArray new];
-    int truckXDelta = .5*screenWidth;
+    int truckXDelta = 1.5*screenWidth;
     
     for(int i = 1; i < 11; i++)
     {
@@ -230,6 +231,12 @@ CGPoint missileVector;
     
     self.fireChopper = [[UIImageView alloc] initWithFrame:CGRectMake(self.character.center.x, self.character.center.y, 80.0, 80.0)];
     [self.view addSubview:self.fireChopper];
+    
+    self.flameMissile = [[UIImageView alloc] initWithFrame:CGRectMake(self.missileImage.center.x, self.missileImage.center.y, 80.0, 80.0)];
+    [self.view addSubview:self.flameMissile];
+    
+    self.flameEnemyChopper = [[UIImageView alloc] initWithFrame:CGRectMake(self.enemyChopper.center.x, self.enemyChopper.center.y, 80.0, 80.0)];
+    [self.view addSubview:self.flameEnemyChopper];
     
     ammoInFlight = false;
     bombInFlight = false;
@@ -253,14 +260,11 @@ CGPoint missileVector;
 -(void)gameGuts
 {
     self.fireChopper.center = CGPointMake(self.character.center.x, self.character.center.y);
-    
+    self.flameMissile.center = CGPointMake(self.missileImage.center.x, self.missileImage.center.y);
+    self.flameEnemyChopper.center = CGPointMake(self.enemyChopper.center.x, self.enemyChopper.center.y);
+
     timePassed = timePassed + gameTime;
     minSpeed = minSpeed + 0.001;
-    
-    if(minSpeed >= deviceScaler*maxMinSpeed)
-    {
-        minSpeed = deviceScaler*maxMinSpeed;
-    }
     
     if ([LeftViewController isInLeft])
     {
@@ -327,6 +331,7 @@ CGPoint missileVector;
 }
     
     [self moveTrucks];
+    [self moveEnemyChopper];
     [self collisionBetweenBombAndTruck];
     
     if([self trucksToRightOfChopper] >= 2)
@@ -339,18 +344,9 @@ CGPoint missileVector;
     }
     
     [self collisionBetweenMissileAndChopper];
-    
-    
- /*   [self moveAlien2];
-    [self moveAlien3];
-    [self moveAlien4];
-    [self moveAlien5];
-    [self moveShields];
-    [self collisionBetweenCharAndAliens];
-    [self collisionBetweenAmmoAndAliens];
-    [self collisionBetweenCharAndShield];
-    [self collisionBetweenCharAndBigShield];
-    [self collisionBetweenCharAndFireball]; */
+    [self collisionBetweenAmmoAndEnemyChopper];
+    [self collisionBetweenAmmoAndMissile];
+    [self collisionBetweenCharAndChopper];
 }
 
 
@@ -413,13 +409,23 @@ CGPoint missileVector;
     }
 }
 
+-(void)moveEnemyChopper
+{
+    self.enemyChopper.center = CGPointMake(self.enemyChopper.center.x - self.charVelocityX - deviceScaler*enemySpeed, self.enemyChopper.center.y);
+    
+    if(self.enemyChopper.center.x < -100)
+    {
+        self.enemyChopper.center = CGPointMake(screenWidth + 300, [self randomHeight]);
+    }
+}
+
 -(void)fireMissile
 {
     self.missileImage.center = CGPointMake(self.missileImage.center.x - self.charVelocityX - deviceScaler*missileSpeed, self.missileImage.center.y);
     
     if(self.missileImage.center.x < -100)
     {
-        self.missileImage.center = CGPointMake(screenWidth + 100, [self randomHeight]);
+        self.missileImage.center = CGPointMake(screenWidth + 300, [self randomHeight]);
     }
 }
 
@@ -468,7 +474,24 @@ CGPoint missileVector;
 {
     if(CGRectIntersectsRect(self.missileImage.frame, self.character.frame))
     {
-        self.missileImage.center = CGPointMake(screenWidth + 100, [self randomHeight]);
+        self.missileImage.center = CGPointMake(screenWidth + 300, [self randomHeight]);
+        self.fireChopper.animationImages = self.fireAnimation;
+        self.fireChopper.animationDuration = 1.0;
+        self.fireChopper.animationRepeatCount = 1;
+        [self.fireChopper startAnimating];
+        self.character.hidden = true;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self gameOver];
+        });
+    }
+}
+
+-(void)collisionBetweenCharAndChopper
+{
+    if(CGRectIntersectsRect(self.character.frame, self.enemyChopper.frame))
+    {
+        [self updateScore:enemyChopperScore];
+        self.enemyChopper.center = CGPointMake(screenWidth + 300, [self randomHeight]);
         self.fireChopper.animationImages = self.fireAnimation;
         self.fireChopper.animationDuration = 1.0;
         self.fireChopper.animationRepeatCount = 1;
@@ -481,68 +504,36 @@ CGPoint missileVector;
 }
 
 
-/*
--(void)moveAlien1
+-(void)collisionBetweenAmmoAndMissile
 {
-    if(bombInFlight)
+    if(CGRectIntersectsRect(self.ammoImage.frame, self.missileImage.frame))
     {
-        alien1Vector.x = alien1End.x -  self.alien1Image.center.x;
-        alien1Vector.y = alien1End.y - self.alien1Image.center.y;
-        double mag = [self magnitude:alien1Vector];
-        
-        if (mag < 10)
-        {
-            bombInFlight = false;
-            self.alien1Image.center = CGPointMake(-100, [self randomHeight]);
-        }
-        
-        self.alien1VelocityX = deviceScaler*[self randomSpeed]*alien1Vector.x/mag;
-        self.alien1VelocityY = deviceScaler*[self randomSpeed]*alien1Vector.y/mag;
-        self.alien1Image.center = CGPointMake(self.alien1Image.center.x + self.alien1VelocityX, self.alien1Image.center.y + self.alien1VelocityY);
-        
-    } else {
-        
-        alien1End.x = screenWidth + 100;
-        alien1End.y = [self randomHeight];
-        bombInFlight = true;
+        [self updateScore:missileScore];
+        self.ammoImage.center = CGPointMake(offScreen, offScreen);
+        ammoInFlight = false;
+        shootPressed = false;
+        self.missileImage.center = CGPointMake(screenWidth + 300, [self randomHeight]);
+        self.flameMissile.animationImages = self.fireAnimation;
+        self.flameMissile.animationDuration = 1.0;
+        self.flameMissile.animationRepeatCount = 1;
+        [self.flameMissile startAnimating];
     }
 }
-*/
 
-/*
--(void)moveShields
+-(void)collisionBetweenAmmoAndEnemyChopper
 {
-    self.shield1Image.transform = CGAffineTransformMakeRotation(5*timePassed);
-    shield1Vector.x = self.character.center.x -  self.shield1Image.center.x;
-    shield1Vector.y = self.character.center.y - self.shield1Image.center.y;
-    double Mag = [self magnitude:shield1Vector];
-    self.shield1VelocityX = deviceScaler*[self randomSpeed]*shield1Vector.x/Mag;
-    self.shield1VelocityY = deviceScaler*[self randomSpeed]*shield1Vector.y/Mag;
-    self.shield1Image.center = CGPointMake(self.shield1Image.center.x + self.shield1VelocityX, self.shield1Image.center.y + self.shield1VelocityY);
-}
-*/
-
-
--(void)collisionBetweenCharAndAliens
-{
-    /*
-    if(CGRectIntersectsRect(self.character.frame, self.alien1Image.frame))
+    if(CGRectIntersectsRect(self.ammoImage.frame, self.enemyChopper.frame))
     {
-        score = score + ufo1Score;
-        self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", score];
-        
-        if (shield <= 0)
-        {
-            [self gameOver];
-            
-        } else {
-        
-            self.alien1Image.center = CGPointMake(-100, [self randomHeight]);
-            shield = shield - 10.0;
-            self.character.alpha = .007*shield + 0.30;
-            self.shieldLabel.text = [NSString stringWithFormat:@"%d", shield];
-        }
-    } */
+        [self updateScore:enemyChopperScore];
+        self.ammoImage.center = CGPointMake(offScreen, offScreen);
+        ammoInFlight = false;
+        shootPressed = false;
+        self.enemyChopper.center = CGPointMake(screenWidth + 300, [self randomHeight]);
+        self.flameEnemyChopper.animationImages = self.fireAnimation;
+        self.flameEnemyChopper.animationDuration = 1.0;
+        self.flameEnemyChopper.animationRepeatCount = 1;
+        [self.flameEnemyChopper startAnimating];
+    }
 }
 
 
@@ -559,6 +550,7 @@ CGPoint missileVector;
     self.missileImage.center = CGPointMake(offScreen, offScreen);
     self.ammoImage.center = CGPointMake(offScreen, offScreen);
     self.bombImage.center = CGPointMake(offScreen, offScreen);
+    self.enemyChopper.center = CGPointMake(offScreen, offScreen);
     
     if(soundIsOn)
     {
@@ -570,10 +562,16 @@ CGPoint missileVector;
     
 }
 
+-(void)updateScore:(int)points
+{
+    score = score + points;
+    self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", score];
+}
+
 -(double)randomSpeed
 {
   //  NSLog(@"speed = %f", minSpeed);
-    return arc4random()%4 + minSpeed + testSpeed;
+    return arc4random()%4 + minSpeed;
 }
 
 
@@ -583,7 +581,7 @@ CGPoint missileVector;
     int maxY = .7*screenHeight;;
     int range = maxY - minY;
     return (arc4random() % range) + minY;
-   // return (screenHeight - controlHeight)/2;
+  //  return (screenHeight - controlHeight)/2;
 }
 
 -(int)randomWidth
