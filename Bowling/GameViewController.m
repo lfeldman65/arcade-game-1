@@ -102,7 +102,7 @@ double screenHeight2;
     
     // Game Center
     
-    [[GameCenterManager sharedManager] setDelegate:self];
+ //   [[GameCenterManager sharedManager] setDelegate:self];
     BOOL available = [[GameCenterManager sharedManager] checkGameCenterAvailability];
     if (available) {
         NSLog(@"available");
@@ -110,7 +110,7 @@ double screenHeight2;
         NSLog(@"not available");
     }
     
-    [[GKLocalPlayer localPlayer] authenticateHandler];
+ //   [[GKLocalPlayer localPlayer] authenticateHandler];
     
     deviceScaler1 = 1;
     

@@ -9,13 +9,14 @@
 #import "PlayViewController.h"
 
 #define charSpeedScale 0.3
-#define ammoSpeed 20.0
+#define ammoSpeed 40.0
 #define enemySpeed 5.0
 #define missileSpeed 10
 #define controlHeight 150.0
 #define bottomAchieve 20000
-#define skyWidth 5000
-#define truckScore 100
+#define skyWidth 7000
+#define truckScore 250
+#define atomScore 500
 #define missileScore 1000
 #define enemyChopperScore 500
 #define gameTime .05
@@ -29,6 +30,7 @@
 
 @property (strong, nonatomic) IBOutlet UIView *leftView;
 @property (strong, nonatomic) IBOutlet UIImageView *ammoImage;
+@property (strong, nonatomic) IBOutlet UIImageView *gateImage;
 
 @property (strong, nonatomic) IBOutlet UIImageView *character;
 @property (strong, nonatomic) UIImageView *fireChopper;
@@ -37,6 +39,7 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (strong, nonatomic) IBOutlet UILabel *shieldLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *finishLine;
 
 @property (strong, nonatomic) IBOutlet UIImageView *bombImage;
 @property (strong, nonatomic) IBOutlet UIImageView *enemyChopper;
@@ -53,10 +56,11 @@
 @property (strong, nonatomic) IBOutlet UIButton *playButton;
 
 @property (strong, nonatomic) NSMutableArray *fireAnimation;
+@property (strong, nonatomic) NSMutableArray *wallAnimation;
 @property (strong, nonatomic) NSMutableArray *truckArray;
 @property (strong, nonatomic) NSMutableArray *fireArray;
+@property (strong, nonatomic) NSMutableArray *padArray;
 @property (strong, nonatomic) IBOutlet UIImageView *missileImage;
-
 
 
 - (IBAction)shootPressed:(id)sender;
@@ -94,13 +98,14 @@ double screenHeight;
 double charWidth;
 double charHeight;
 double ufoSpeed;
-double minSpeed;
 double timePassed;
 
 int score;
 int shield;
-int fireballCount;
+int atomCount;
 int deviceScaler;
+
+int level;
 
 CGPoint missileVector;
 
@@ -116,8 +121,6 @@ CGPoint missileVector;
     self.playButton.hidden = true;
     self.leftView.multipleTouchEnabled = true;
     self.view.multipleTouchEnabled = true;
-    [self initGame];
-    [self playButtonPressed:nil];
     NSNumber* soundOn = [[NSUserDefaults standardUserDefaults] objectForKey:@"soundOn"];
     soundIsOn = [soundOn boolValue];
     
@@ -127,7 +130,14 @@ CGPoint missileVector;
     {
         [self.fireAnimation addObject:[UIImage imageNamed:[NSString stringWithFormat:@"fire%d", i]]];
     }
-
+    
+    self.wallAnimation = [[NSMutableArray alloc] init];
+    
+    for (int i = 1; i <= 3 ; i++)
+    {
+        [self.wallAnimation addObject:[UIImage imageNamed:[NSString stringWithFormat:@"barrier%d", i]]];
+    }
+    
     // Ammo sound
     
     NSString* resourcePath = [[NSBundle mainBundle] resourcePath];
@@ -192,31 +202,47 @@ CGPoint missileVector;
     {
         deviceScaler = 2;
     }
+    
+    self.gateImage.animationImages = self.wallAnimation;
+    self.gateImage.animationDuration = 1.0;
+    self.gateImage.animationRepeatCount = 0;
+    [self.gateImage startAnimating];
+    
+    [self playButtonPressed:nil];
 }
+
 
 - (IBAction)playButtonPressed:(id)sender
 {
-    [self initGame];
+    level = 1;
+    score = 0;
+    timePassed = 0;
+    self.playButton.hidden = true;
+    self.character.hidden = false;
+    
+    [self initLevel];
+    
     self.gameTimer = [NSTimer scheduledTimerWithTimeInterval:gameTime target:self selector:@selector(gameGuts) userInfo:nil repeats:YES];
 }
 
--(void)initGame
+-(void)initLevel
 {
-    score = 0;
-    shield = 100;
-    minSpeed = 2.0;     // starting min speed
-    fireballCount = 0;
-    self.scoreLabel.text = @"Score: 0";
-    self.shieldLabel.text = @"100";
-    self.fireballLabel.text = @"0";
+    atomCount = 0;
+    self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", score];
+    self.shieldLabel.text = [NSString stringWithFormat:@"Level: %d", level];
     self.character.center = CGPointMake(.2*screenWidth, (screenHeight - controlHeight)/2);
     self.ammoImage.center = CGPointMake(offScreen, offScreen);
     self.bombImage.center = CGPointMake(offScreen, offScreen);
     self.missileImage.center = CGPointMake(screenWidth + 300, [self randomHeight]);
     self.enemyChopper.center = CGPointMake(screenWidth + 300, [self randomHeight]);
+    self.gateImage.frame = CGRectMake(skyWidth - 2*screenWidth, 0, 10, screenHeight - controlHeight);
+    self.skyBG.frame = CGRectMake(0, 0, skyWidth, screenHeight - controlHeight);
+    self.finishLine.frame = CGRectMake(skyWidth - screenWidth, screenHeight/2, 50, 50);
     
     self.truckArray = [NSMutableArray new];
     self.fireArray = [NSMutableArray new];
+    self.padArray = [NSMutableArray new];
+    
     int truckXDelta = 1.5*screenWidth;
     
     for(int i = 1; i < 11; i++)
@@ -227,6 +253,13 @@ CGPoint missileVector;
         
         UIImageView *fireView = [[UIImageView alloc] initWithFrame:CGRectMake(i*truckXDelta, screenHeight - controlHeight - 75.0, 100,60)];
         [self.fireArray addObject:fireView];
+    }
+    
+    for(int i = 1; i < 10; i++)
+    {
+        UIImageView *padView = [[UIImageView alloc] initWithFrame:CGRectMake(i*truckXDelta + .5*screenWidth, [self randomHeight], 50, 50)];
+        padView.image = [UIImage imageNamed:@"atom.png"];
+        [self.padArray addObject:padView];
     }
     
     self.fireChopper = [[UIImageView alloc] initWithFrame:CGRectMake(self.character.center.x, self.character.center.y, 80.0, 80.0)];
@@ -248,23 +281,14 @@ CGPoint missileVector;
     bombPressed = false;
     shootPressed= false;
     
-    timePassed = 0;
-    
-    self.playButton.hidden = true;
-    self.character.hidden = false;
-    
-    self.skyBG.frame = CGRectMake(0, 0, skyWidth, screenHeight - controlHeight);
-
 }
 
 -(void)gameGuts
 {
-    self.fireChopper.center = CGPointMake(self.character.center.x, self.character.center.y);
-    self.flameMissile.center = CGPointMake(self.missileImage.center.x, self.missileImage.center.y);
-    self.flameEnemyChopper.center = CGPointMake(self.enemyChopper.center.x, self.enemyChopper.center.y);
+    self.gateImage.center = CGPointMake(self.gateImage.center.x - self.charVelocityX, self.gateImage.center.y);
+    self.finishLine.center = CGPointMake(self.finishLine.center.x - self.charVelocityX, self.finishLine.center.y);
 
     timePassed = timePassed + gameTime;
-    minSpeed = minSpeed + 0.001;
     
     if ([LeftViewController isInLeft])
     {
@@ -306,10 +330,12 @@ CGPoint missileVector;
         {
             if(lastShootRight)
             {
+                self.ammoImage.image = [UIImage imageNamed:@"ammoRight.png"];
                 [self shootGunRight];
                 
             } else {
                 
+                self.ammoImage.image = [UIImage imageNamed:@"ammoLeft.png"];
                 [self shootGunLeft];
             }
             
@@ -317,13 +343,13 @@ CGPoint missileVector;
             
             if(lastFaceRight)
             {
-                self.ammoImage.center = CGPointMake(self.character.center.x + 10.0, self.character.center.y + 12.0);
+                self.ammoImage.center = CGPointMake(self.character.center.x + 10.0, self.character.center.y + 5.0);
                 ammoInFlight = true;
                 lastShootRight = true;
                 
             } else {
                 
-                self.ammoImage.center = CGPointMake(self.character.center.x - 10.0, self.character.center.y + 12.0);
+                self.ammoImage.center = CGPointMake(self.character.center.x - 10.0, self.character.center.y + 5.0);
                 ammoInFlight = true;
                 lastShootRight = false;
             }
@@ -331,22 +357,32 @@ CGPoint missileVector;
 }
     
     [self moveTrucks];
-    [self moveEnemyChopper];
+    [self moveAtoms];
+
     [self collisionBetweenBombAndTruck];
+    
+    if(level >= 1)
+    {
+        [self moveEnemyChopper];
+    }
     
     if([self trucksToRightOfChopper] >= 2)
     {
         [self fireMissile];
-        
-    } else {
-        
-        self.missileImage.center = CGPointMake(screenWidth + 100, [self randomHeight]);
     }
     
-    [self collisionBetweenMissileAndChopper];
+  //  [self collisionBetweenMissileAndChopper];
     [self collisionBetweenAmmoAndEnemyChopper];
     [self collisionBetweenAmmoAndMissile];
-    [self collisionBetweenCharAndChopper];
+ //   [self collisionBetweenCharAndChopper];
+    [self collisionBetweenBombAndEnemyChopper];
+    [self collisionBetweenBombAndMissile];
+    [self collisionBetweenCharAndAtom];
+    [self collisionBetweenCharAndFence];
+    [self collisionBetweenCharAndFinish];
+
+
+
 }
 
 
@@ -354,6 +390,8 @@ CGPoint missileVector;
 {
     self.charVelocityX = deviceScaler*charSpeedScale*[LeftViewController findDistanceX];
     self.charVelocityY = deviceScaler*charSpeedScale*[LeftViewController findDistanceY];
+    
+    self.fireChopper.center = CGPointMake(self.character.center.x, self.character.center.y);
     
     self.character.image = [UIImage imageNamed:@"chopperRight.png"];
     
@@ -365,19 +403,20 @@ CGPoint missileVector;
     if(self.character.center.y >= screenHeight - controlHeight - self.character.frame.size.height)
     {
         self.charVelocityX = 0;   // landing on ground
+        self.character.center = CGPointMake(self.character.center.x, screenHeight - controlHeight - self.character.frame.size.height);
     }
     
     self.character.center = CGPointMake(self.character.center.x, self.character.center.y + self.charVelocityY);
     self.skyBG.center = CGPointMake(self.skyBG.center.x - self.charVelocityX, self.skyBG.center.y);
     
-    if(self.character.center.y < self.character.frame.size.height/2)
+    if(self.character.center.y < 2*self.character.frame.size.height)
     {
-        self.character.center = CGPointMake(self.character.center.x, self.character.frame.size.height/2);
+        self.character.center = CGPointMake(self.character.center.x, 2*self.character.frame.size.height);
     }
     
     if(self.character.center.y >= screenHeight - controlHeight - 35)
     {
-        self.character.center = CGPointMake(self.character.center.x, screenHeight - controlHeight - 35);
+      //  self.character.center = CGPointMake(self.character.center.x, screenHeight - controlHeight - 35);
     }
     
     if(self.skyBG.center.x >= skyWidth/2)
@@ -409,6 +448,15 @@ CGPoint missileVector;
     }
 }
 
+-(void)moveAtoms
+{
+    for(UIImageView *iv in self.padArray)
+    {
+        iv.center =  CGPointMake(iv.center.x - self.charVelocityX, iv.center.y);
+        [self.view addSubview:iv];
+    }
+}
+
 -(void)moveEnemyChopper
 {
     self.enemyChopper.center = CGPointMake(self.enemyChopper.center.x - self.charVelocityX - deviceScaler*enemySpeed, self.enemyChopper.center.y);
@@ -417,6 +465,8 @@ CGPoint missileVector;
     {
         self.enemyChopper.center = CGPointMake(screenWidth + 300, [self randomHeight]);
     }
+    
+    self.flameEnemyChopper.center = CGPointMake(self.enemyChopper.center.x, self.enemyChopper.center.y);
 }
 
 -(void)fireMissile
@@ -427,6 +477,8 @@ CGPoint missileVector;
     {
         self.missileImage.center = CGPointMake(screenWidth + 300, [self randomHeight]);
     }
+    
+    self.flameMissile.center = CGPointMake(self.missileImage.center.x, self.missileImage.center.y);
 }
 
 
@@ -445,7 +497,6 @@ CGPoint missileVector;
 }
 
 
-
 -(void)collisionBetweenBombAndTruck
 {
     int i = 0;
@@ -456,8 +507,10 @@ CGPoint missileVector;
         {
             if(CGRectIntersectsRect(self.bombImage.frame, iv.frame))
             {
-                score = score + truckScore;
-                self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", score];
+                [self updateScore:truckScore];
+                self.bombImage.center = CGPointMake(offScreen, offScreen);
+                bombPressed = false;
+                bombInFlight = false;
                 UIImageView *hitFire = [self.fireArray objectAtIndex:i];
                 iv.hidden = true;
                 hitFire.animationImages = self.fireAnimation;
@@ -469,6 +522,45 @@ CGPoint missileVector;
         i++;
     }
 }
+
+
+-(void)collisionBetweenCharAndAtom
+{
+    for(UIImageView *iv in self.padArray)
+    {
+        if(!iv.hidden)
+        {
+            if(CGRectIntersectsRect(self.character.frame, iv.frame))
+            {
+                atomCount++;
+                self.fireballLabel.text = [NSString stringWithFormat:@"%d", atomCount];
+                iv.hidden = true;
+                if(atomCount >= 1)
+                {
+                    self.gateImage.center = CGPointMake(-offScreen, offScreen);
+                }
+            }
+        }
+    }
+}
+
+-(void)collisionBetweenCharAndFence
+{
+    if(CGRectIntersectsRect(self.gateImage.frame, self.character.frame))
+    {
+        self.fireChopper.animationImages = self.fireAnimation;
+        self.fireChopper.animationDuration = 1.0;
+        self.fireChopper.animationRepeatCount = 1;
+        [self.fireChopper startAnimating];
+        self.character.hidden = true;
+        self.gateImage.frame = CGRectMake(skyWidth - 2*screenWidth, 0, 10, screenHeight - controlHeight);
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self gameOver];
+        });
+    }
+}
+
 
 -(void)collisionBetweenMissileAndChopper
 {
@@ -536,27 +628,58 @@ CGPoint missileVector;
     }
 }
 
+-(void)collisionBetweenBombAndEnemyChopper
+{
+    if(CGRectIntersectsRect(self.bombImage.frame, self.enemyChopper.frame))
+    {
+        [self updateScore:enemyChopperScore];
+        self.bombImage.center = CGPointMake(offScreen, offScreen);
+        bombPressed = false;
+        bombInFlight = false;
+        self.enemyChopper.center = CGPointMake(screenWidth + 300, [self randomHeight]);
+        self.flameEnemyChopper.animationImages = self.fireAnimation;
+        self.flameEnemyChopper.animationDuration = 1.0;
+        self.flameEnemyChopper.animationRepeatCount = 1;
+        [self.flameEnemyChopper startAnimating];
+    }
+}
+
+-(void)collisionBetweenBombAndMissile
+{
+    if(CGRectIntersectsRect(self.bombImage.frame, self.missileImage.frame))
+    {
+        [self updateScore:missileScore];
+        self.missileImage.center = CGPointMake(screenWidth + 300, [self randomHeight]);
+        self.bombImage.center = CGPointMake(offScreen, offScreen);
+        bombPressed = false;
+        bombInFlight = false;
+        self.flameMissile.animationImages = self.fireAnimation;
+        self.flameMissile.animationDuration = 1.0;
+        self.flameMissile.animationRepeatCount = 1;
+        [self.flameMissile startAnimating];
+    }
+}
+
+-(void)collisionBetweenCharAndFinish
+{
+    if(CGRectIntersectsRect(self.character.frame, self.finishLine.frame))
+    {
+        [self newLevel];
+    }
+}
+
 
 -(void)gameOver
 {
     [self.gameTimer invalidate];
     [self highScores];
-
-    for(UIImageView *iv in self.truckArray)
-    {
-        [iv removeFromSuperview];
-    }
-    
-    self.missileImage.center = CGPointMake(offScreen, offScreen);
-    self.ammoImage.center = CGPointMake(offScreen, offScreen);
-    self.bombImage.center = CGPointMake(offScreen, offScreen);
-    self.enemyChopper.center = CGPointMake(offScreen, offScreen);
+    [self resetImages];
     
     if(soundIsOn)
     {
         [self.overPlayer play];
     }
-    self.shieldLabel.text = @"0";
+    
     self.playButton.hidden = false;
     self.character.hidden = true;
     
@@ -568,10 +691,24 @@ CGPoint missileVector;
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", score];
 }
 
--(double)randomSpeed
+-(void)resetImages
 {
-  //  NSLog(@"speed = %f", minSpeed);
-    return arc4random()%4 + minSpeed;
+    for(UIImageView *iv in self.truckArray)
+    {
+        [iv removeFromSuperview];
+    }
+    
+    for(UIImageView *iv in self.padArray)
+    {
+        [iv removeFromSuperview];
+    }
+    
+    self.gateImage.center = CGPointMake(offScreen, offScreen);
+    self.missileImage.center = CGPointMake(offScreen, offScreen);
+    self.ammoImage.center = CGPointMake(offScreen, offScreen);
+    self.bombImage.center = CGPointMake(offScreen, offScreen);
+    self.enemyChopper.center = CGPointMake(offScreen, offScreen);
+    self.finishLine.center = CGPointMake(offScreen, offScreen);
 }
 
 
@@ -707,6 +844,15 @@ CGPoint missileVector;
         shootPressed = false;
     }
 }
+
+-(void)newLevel
+{
+    level++;
+    [self resetImages];
+    [self initLevel];
+
+}
+
 
 - (void)didReceiveMemoryWarning
 {
