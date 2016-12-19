@@ -29,9 +29,14 @@ AppDelegate* theAppDelegate()
     NSDictionary *defaultsDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [NSNumber numberWithBool:false], @"wasGameLaunched",
                                   [NSNumber numberWithInt:0], @"highScore",
+                                  [NSNumber numberWithInt:0], @"highLevel",
                                   [NSNumber numberWithBool:false], @"fullVersion",
                                   [NSNumber numberWithInt:0], @"highPlasma",
                                   [NSNumber numberWithBool:true], @"soundOn",
+                                  [NSNumber numberWithBool:false], @"gameSaved",
+                                  [NSNumber numberWithInt:0], @"savedScore",
+                                  [NSNumber numberWithInt:0], @"savedLevel",
+                                  [NSNumber numberWithInt:0], @"savedLives",
                                   nil];
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaultsDict];

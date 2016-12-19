@@ -8,19 +8,21 @@
 
 #import "PlayViewController.h"
 
-#define charSpeedScale 0.3
-#define ammoSpeed 40.0
+#define charSpeedScale 0.25
+#define ammoSpeed 50.0
 #define enemySpeed 5.0
 #define missileSpeed 10
-#define controlHeight 150.0
+#define controlHeight 130.0
 #define bottomAchieve 20000
-#define skyWidth 7000
+#define skyWidth 10000
 #define truckScore 250
 #define atomScore 500
 #define missileScore 1000
 #define enemyChopperScore 500
+#define levelDoneScore 10000
 #define gameTime .05
 #define offScreen -1000
+#define numTrucks 10
 
 
 @interface PlayViewController ()
@@ -31,21 +33,22 @@
 @property (strong, nonatomic) IBOutlet UIView *leftView;
 @property (strong, nonatomic) IBOutlet UIImageView *ammoImage;
 @property (strong, nonatomic) IBOutlet UIImageView *gateImage;
-
 @property (strong, nonatomic) IBOutlet UIImageView *character;
+@property (strong, nonatomic) IBOutlet UIImageView *skyBG;
+@property (strong, nonatomic) IBOutlet UIImageView *finishLine;
+@property (strong, nonatomic) IBOutlet UIImageView *bombImage;
+@property (strong, nonatomic) IBOutlet UIImageView *enemyChopper;
+@property (strong, nonatomic) IBOutlet UIImageView *missileImage;
+@property (strong, nonatomic) IBOutlet UILabel *livesLabel;
+
 @property (strong, nonatomic) UIImageView *fireChopper;
 @property (strong, nonatomic) UIImageView *flameMissile;
 @property (strong, nonatomic) UIImageView *flameEnemyChopper;
 
 @property (strong, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (strong, nonatomic) IBOutlet UILabel *shieldLabel;
-@property (strong, nonatomic) IBOutlet UIImageView *finishLine;
-
-@property (strong, nonatomic) IBOutlet UIImageView *bombImage;
-@property (strong, nonatomic) IBOutlet UIImageView *enemyChopper;
 
 @property (strong, nonatomic) IBOutlet UILabel *fireballLabel;
-@property (strong, nonatomic) IBOutlet UIImageView *skyBG;
 
 @property (retain, nonatomic) AVAudioPlayer *ammoPlayer;
 @property (retain, nonatomic) AVAudioPlayer *overPlayer;
@@ -57,14 +60,15 @@
 
 @property (strong, nonatomic) NSMutableArray *fireAnimation;
 @property (strong, nonatomic) NSMutableArray *wallAnimation;
+@property (strong, nonatomic) NSMutableArray *finishAnimation;
 @property (strong, nonatomic) NSMutableArray *truckArray;
 @property (strong, nonatomic) NSMutableArray *fireArray;
-@property (strong, nonatomic) NSMutableArray *padArray;
-@property (strong, nonatomic) IBOutlet UIImageView *missileImage;
+@property (strong, nonatomic) NSMutableArray *atomArray;
 
 
 - (IBAction)shootPressed:(id)sender;
 - (IBAction)bombPressed:(id)sender;
+- (IBAction)shootReleased:(id)sender;
 
 
 @property (nonatomic) float charVelocityX;
@@ -97,15 +101,15 @@ double screenWidth;
 double screenHeight;
 double charWidth;
 double charHeight;
-double ufoSpeed;
 double timePassed;
 
 int score;
-int shield;
 int atomCount;
 int deviceScaler;
 
 int level;
+int lives;
+
 
 CGPoint missileVector;
 
@@ -113,6 +117,10 @@ CGPoint missileVector;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    NSNumber* gameSaved = [[NSUserDefaults standardUserDefaults] objectForKey:@"gameSaved"];
+    BOOL isGameSaved = [gameSaved boolValue];
+    
     screenWidth = self.view.frame.size.width;
     screenHeight = self.view.frame.size.height;
     charWidth = self.character.frame.size.width;
@@ -136,6 +144,13 @@ CGPoint missileVector;
     for (int i = 1; i <= 3 ; i++)
     {
         [self.wallAnimation addObject:[UIImage imageNamed:[NSString stringWithFormat:@"barrier%d", i]]];
+    }
+    
+    self.finishAnimation = [[NSMutableArray alloc] init];
+    
+    for (int i = 1; i <= 5 ; i++)
+    {
+        [self.finishAnimation addObject:[UIImage imageNamed:[NSString stringWithFormat:@"fractal%d", i]]];
     }
     
     // Ammo sound
@@ -208,12 +223,48 @@ CGPoint missileVector;
     self.gateImage.animationRepeatCount = 0;
     [self.gateImage startAnimating];
     
-    [self playButtonPressed:nil];
+    self.finishLine.animationImages = self.finishAnimation;
+    self.finishLine.animationDuration = 1.0;
+    self.finishLine.animationRepeatCount = 0;
+    [self.finishLine startAnimating];
+    
+    if(isGameSaved)
+    {
+        [self restoreGame];
+        
+    } else {
+        
+        [self playButtonPressed:nil];
+
+    }
 }
 
+-(void)restoreGame
+{
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:false] forKey:@"gameSaved"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    NSNumber *scoreSaved = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedScore"];
+    score = [scoreSaved intValue];
+
+    NSNumber *levelSaved = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedLevel"];
+    level = [levelSaved intValue];
+    
+    NSNumber *livesSaved = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedLives"];
+    lives = [livesSaved intValue];
+    
+    timePassed = 0;
+    self.playButton.hidden = true;
+    self.character.hidden = false;
+    
+    [self initLevel];
+    
+    self.gameTimer = [NSTimer scheduledTimerWithTimeInterval:gameTime target:self selector:@selector(gameGuts) userInfo:nil repeats:YES];
+}
 
 - (IBAction)playButtonPressed:(id)sender
 {
+    lives = 3;
     level = 1;
     score = 0;
     timePassed = 0;
@@ -228,24 +279,28 @@ CGPoint missileVector;
 -(void)initLevel
 {
     atomCount = 0;
-    self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", score];
+    [self updateScore:0];
     self.shieldLabel.text = [NSString stringWithFormat:@"Level: %d", level];
+    [self updateLives:0];
     self.character.center = CGPointMake(.2*screenWidth, (screenHeight - controlHeight)/2);
     self.ammoImage.center = CGPointMake(offScreen, offScreen);
     self.bombImage.center = CGPointMake(offScreen, offScreen);
-    self.missileImage.center = CGPointMake(screenWidth + 300, [self randomHeight]);
+    [self resetMissile];
     self.enemyChopper.center = CGPointMake(screenWidth + 300, [self randomHeight]);
     self.gateImage.frame = CGRectMake(skyWidth - 2*screenWidth, 0, 10, screenHeight - controlHeight);
     self.skyBG.frame = CGRectMake(0, 0, skyWidth, screenHeight - controlHeight);
-    self.finishLine.frame = CGRectMake(skyWidth - screenWidth, screenHeight/2, 50, 50);
+    self.finishLine.frame = CGRectMake(skyWidth - screenWidth, screenHeight/2 - 100, 200, 200);
+    
+    self.finishLine.layer.cornerRadius =.5*self.finishLine.layer.frame.size.height;
+    self.finishLine.layer.masksToBounds = YES;
     
     self.truckArray = [NSMutableArray new];
     self.fireArray = [NSMutableArray new];
-    self.padArray = [NSMutableArray new];
+    self.atomArray = [NSMutableArray new];
     
-    int truckXDelta = 1.5*screenWidth;
+    int truckXDelta = skyWidth/numTrucks;
     
-    for(int i = 1; i < 11; i++)
+    for(int i = 1; i <= numTrucks; i++)
     {
         UIImageView *truckView = [[UIImageView alloc] initWithFrame:CGRectMake(i*truckXDelta, screenHeight - controlHeight - 75.0, 100,60)];
         truckView.image = [UIImage imageNamed:@"armyTruckLeft.png"];
@@ -255,11 +310,11 @@ CGPoint missileVector;
         [self.fireArray addObject:fireView];
     }
     
-    for(int i = 1; i < 10; i++)
+    for(int i = 1; i < numTrucks; i++)
     {
-        UIImageView *padView = [[UIImageView alloc] initWithFrame:CGRectMake(i*truckXDelta + .5*screenWidth, [self randomHeight], 50, 50)];
-        padView.image = [UIImage imageNamed:@"atom.png"];
-        [self.padArray addObject:padView];
+        UIImageView *atomView = [[UIImageView alloc] initWithFrame:CGRectMake(i*truckXDelta + .5*screenWidth, [self randomHeight], 50, 50)];
+        atomView.image = [UIImage imageNamed:@"atom.png"];
+        [self.atomArray addObject:atomView];
     }
     
     self.fireChopper = [[UIImageView alloc] initWithFrame:CGRectMake(self.character.center.x, self.character.center.y, 80.0, 80.0)];
@@ -277,7 +332,6 @@ CGPoint missileVector;
     lastFaceRight = true;
     self.charVelocityX = 0;
     self.charVelocityY = 0;
-    
     bombPressed = false;
     shootPressed= false;
     
@@ -324,7 +378,7 @@ CGPoint missileVector;
         }
     }
     
-    if (shootPressed)
+    if (shootPressed || ammoInFlight)
     {
         if(ammoInFlight)
         {
@@ -361,7 +415,7 @@ CGPoint missileVector;
 
     [self collisionBetweenBombAndTruck];
     
-    if(level >= 1)
+    if(level >= 3)
     {
         [self moveEnemyChopper];
     }
@@ -369,19 +423,21 @@ CGPoint missileVector;
     if([self trucksToRightOfChopper] >= 2)
     {
         [self fireMissile];
+        
+    } else {
+        
+        self.missileImage.center = CGPointMake(-offScreen, offScreen);
     }
     
-  //  [self collisionBetweenMissileAndChopper];
+    [self collisionBetweenMissileAndChopper];
     [self collisionBetweenAmmoAndEnemyChopper];
     [self collisionBetweenAmmoAndMissile];
- //   [self collisionBetweenCharAndChopper];
+    [self collisionBetweenCharAndChopper];
     [self collisionBetweenBombAndEnemyChopper];
     [self collisionBetweenBombAndMissile];
     [self collisionBetweenCharAndAtom];
     [self collisionBetweenCharAndFence];
     [self collisionBetweenCharAndFinish];
-
-
 
 }
 
@@ -400,23 +456,17 @@ CGPoint missileVector;
         self.character.image = [UIImage imageNamed:@"chopperLeft.png"];
     }
     
-    if(self.character.center.y >= screenHeight - controlHeight - self.character.frame.size.height)
-    {
-        self.charVelocityX = 0;   // landing on ground
-        self.character.center = CGPointMake(self.character.center.x, screenHeight - controlHeight - self.character.frame.size.height);
-    }
-    
     self.character.center = CGPointMake(self.character.center.x, self.character.center.y + self.charVelocityY);
     self.skyBG.center = CGPointMake(self.skyBG.center.x - self.charVelocityX, self.skyBG.center.y);
     
-    if(self.character.center.y < 2*self.character.frame.size.height)
+    if(self.character.center.y >= .65*screenHeight)
     {
-        self.character.center = CGPointMake(self.character.center.x, 2*self.character.frame.size.height);
+        self.character.center = CGPointMake(self.character.center.x, .65*screenHeight);
     }
     
-    if(self.character.center.y >= screenHeight - controlHeight - 35)
+    if(self.character.center.y < .1*screenHeight)
     {
-      //  self.character.center = CGPointMake(self.character.center.x, screenHeight - controlHeight - 35);
+        self.character.center = CGPointMake(self.character.center.x, .1*screenHeight);
     }
     
     if(self.skyBG.center.x >= skyWidth/2)
@@ -450,7 +500,7 @@ CGPoint missileVector;
 
 -(void)moveAtoms
 {
-    for(UIImageView *iv in self.padArray)
+    for(UIImageView *iv in self.atomArray)
     {
         iv.center =  CGPointMake(iv.center.x - self.charVelocityX, iv.center.y);
         [self.view addSubview:iv];
@@ -475,7 +525,7 @@ CGPoint missileVector;
     
     if(self.missileImage.center.x < -100)
     {
-        self.missileImage.center = CGPointMake(screenWidth + 300, [self randomHeight]);
+        [self resetMissile];
     }
     
     self.flameMissile.center = CGPointMake(self.missileImage.center.x, self.missileImage.center.y);
@@ -526,18 +576,19 @@ CGPoint missileVector;
 
 -(void)collisionBetweenCharAndAtom
 {
-    for(UIImageView *iv in self.padArray)
+    for(UIImageView *iv in self.atomArray)
     {
         if(!iv.hidden)
         {
             if(CGRectIntersectsRect(self.character.frame, iv.frame))
             {
+                [self updateScore:atomScore];
                 atomCount++;
                 self.fireballLabel.text = [NSString stringWithFormat:@"%d", atomCount];
                 iv.hidden = true;
-                if(atomCount >= 1)
+                if(atomCount >= numTrucks - 1)
                 {
-                    self.gateImage.center = CGPointMake(-offScreen, offScreen);
+                    self.gateImage.center = CGPointMake(offScreen, offScreen);
                 }
             }
         }
@@ -566,15 +617,21 @@ CGPoint missileVector;
 {
     if(CGRectIntersectsRect(self.missileImage.frame, self.character.frame))
     {
-        self.missileImage.center = CGPointMake(screenWidth + 300, [self randomHeight]);
+        [self updateLives:-1];
+        [self resetMissile];
+        shootPressed = false;
         self.fireChopper.animationImages = self.fireAnimation;
         self.fireChopper.animationDuration = 1.0;
         self.fireChopper.animationRepeatCount = 1;
         [self.fireChopper startAnimating];
-        self.character.hidden = true;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [self gameOver];
-        });
+        
+        if(lives <= 0)
+        {
+              self.character.hidden = true;
+             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+             [self gameOver];
+             });
+        }
     }
 }
 
@@ -582,16 +639,23 @@ CGPoint missileVector;
 {
     if(CGRectIntersectsRect(self.character.frame, self.enemyChopper.frame))
     {
+        
+        [self updateLives:-1];
         [self updateScore:enemyChopperScore];
+        shootPressed = false;
         self.enemyChopper.center = CGPointMake(screenWidth + 300, [self randomHeight]);
         self.fireChopper.animationImages = self.fireAnimation;
         self.fireChopper.animationDuration = 1.0;
         self.fireChopper.animationRepeatCount = 1;
         [self.fireChopper startAnimating];
-        self.character.hidden = true;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [self gameOver];
-        });
+        
+        if(lives <= 0)
+        {
+            self.character.hidden = true;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self gameOver];
+            });
+        }
     }
 }
 
@@ -600,11 +664,11 @@ CGPoint missileVector;
 {
     if(CGRectIntersectsRect(self.ammoImage.frame, self.missileImage.frame))
     {
-        [self updateScore:missileScore];
         self.ammoImage.center = CGPointMake(offScreen, offScreen);
+        [self resetMissile];
         ammoInFlight = false;
-        shootPressed = false;
-        self.missileImage.center = CGPointMake(screenWidth + 300, [self randomHeight]);
+      //  shootPressed = false;
+        [self updateScore:missileScore];
         self.flameMissile.animationImages = self.fireAnimation;
         self.flameMissile.animationDuration = 1.0;
         self.flameMissile.animationRepeatCount = 1;
@@ -616,11 +680,11 @@ CGPoint missileVector;
 {
     if(CGRectIntersectsRect(self.ammoImage.frame, self.enemyChopper.frame))
     {
-        [self updateScore:enemyChopperScore];
+        self.enemyChopper.center = CGPointMake(screenWidth + 300, [self randomHeight]);
         self.ammoImage.center = CGPointMake(offScreen, offScreen);
         ammoInFlight = false;
-        shootPressed = false;
-        self.enemyChopper.center = CGPointMake(screenWidth + 300, [self randomHeight]);
+      //  shootPressed = false;
+        [self updateScore:enemyChopperScore];
         self.flameEnemyChopper.animationImages = self.fireAnimation;
         self.flameEnemyChopper.animationDuration = 1.0;
         self.flameEnemyChopper.animationRepeatCount = 1;
@@ -632,11 +696,11 @@ CGPoint missileVector;
 {
     if(CGRectIntersectsRect(self.bombImage.frame, self.enemyChopper.frame))
     {
-        [self updateScore:enemyChopperScore];
+        self.enemyChopper.center = CGPointMake(screenWidth + 300, [self randomHeight]);
         self.bombImage.center = CGPointMake(offScreen, offScreen);
         bombPressed = false;
         bombInFlight = false;
-        self.enemyChopper.center = CGPointMake(screenWidth + 300, [self randomHeight]);
+        [self updateScore:enemyChopperScore];
         self.flameEnemyChopper.animationImages = self.fireAnimation;
         self.flameEnemyChopper.animationDuration = 1.0;
         self.flameEnemyChopper.animationRepeatCount = 1;
@@ -648,11 +712,11 @@ CGPoint missileVector;
 {
     if(CGRectIntersectsRect(self.bombImage.frame, self.missileImage.frame))
     {
-        [self updateScore:missileScore];
-        self.missileImage.center = CGPointMake(screenWidth + 300, [self randomHeight]);
         self.bombImage.center = CGPointMake(offScreen, offScreen);
+        [self resetMissile];
         bombPressed = false;
         bombInFlight = false;
+        [self updateScore:missileScore];
         self.flameMissile.animationImages = self.fireAnimation;
         self.flameMissile.animationDuration = 1.0;
         self.flameMissile.animationRepeatCount = 1;
@@ -664,8 +728,15 @@ CGPoint missileVector;
 {
     if(CGRectIntersectsRect(self.character.frame, self.finishLine.frame))
     {
+        [self updateLives:1];
+        [self updateScore:levelDoneScore];
         [self newLevel];
     }
+}
+
+-(void)resetMissile
+{
+    self.missileImage.center = CGPointMake(screenWidth + 500, [self randomHeight]);
 }
 
 
@@ -691,6 +762,12 @@ CGPoint missileVector;
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", score];
 }
 
+-(void)updateLives:(int)life
+{
+    lives = lives + life;
+    self.livesLabel.text = [NSString stringWithFormat:@"%d", lives];
+}
+
 -(void)resetImages
 {
     for(UIImageView *iv in self.truckArray)
@@ -698,24 +775,26 @@ CGPoint missileVector;
         [iv removeFromSuperview];
     }
     
-    for(UIImageView *iv in self.padArray)
+    for(UIImageView *iv in self.atomArray)
     {
         [iv removeFromSuperview];
     }
     
-    self.gateImage.center = CGPointMake(offScreen, offScreen);
-    self.missileImage.center = CGPointMake(offScreen, offScreen);
-    self.ammoImage.center = CGPointMake(offScreen, offScreen);
-    self.bombImage.center = CGPointMake(offScreen, offScreen);
-    self.enemyChopper.center = CGPointMake(offScreen, offScreen);
-    self.finishLine.center = CGPointMake(offScreen, offScreen);
+    self.gateImage.center = CGPointMake(offScreen - 1000, offScreen);
+    self.missileImage.center = CGPointMake(offScreen - 2000, offScreen);
+    self.ammoImage.center = CGPointMake(offScreen - 3000, offScreen);
+    self.bombImage.center = CGPointMake(offScreen - 4000, offScreen);
+    self.enemyChopper.center = CGPointMake(offScreen - 5000, offScreen);
+    self.finishLine.center = CGPointMake(offScreen - 6000, offScreen);
+    self.character.center = CGPointMake(offScreen - 7000, offScreen);
+
 }
 
 
 -(int)randomHeight
 {
     int minY = .1*screenHeight;
-    int maxY = .7*screenHeight;;
+    int maxY = .65*screenHeight;;
     int range = maxY - minY;
     return (arc4random() % range) + minY;
   //  return (screenHeight - controlHeight)/2;
@@ -733,13 +812,27 @@ CGPoint missileVector;
 {
     [self.gameTimer invalidate];
 
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"What do you want to do, Space Cowboy?" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"What now Ace?" message:nil preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *home = [UIAlertAction actionWithTitle:@"Go Home" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action)
     {
        [self dismissViewControllerAnimated:YES completion:nil];
     }];
     
+    UIAlertAction *save = [UIAlertAction actionWithTitle:@"Save Game" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action)
+                           {
+                               [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:true] forKey:@"gameSaved"];
+                               [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:score] forKey:@"savedScore"];
+                               
+                               [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:level] forKey:@"savedLevel"];
+                               
+                                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:lives] forKey:@"savedLives"];
+                               
+                               [[NSUserDefaults standardUserDefaults] synchronize];
+
+                               [self dismissViewControllerAnimated:YES completion:nil];
+                           }];
+
     UIAlertAction *resume = [UIAlertAction actionWithTitle:@"Resume" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action)
     {
         self.gameTimer = [NSTimer scheduledTimerWithTimeInterval:gameTime target:self selector:@selector(gameGuts) userInfo:nil repeats:YES];
@@ -751,11 +844,13 @@ CGPoint missileVector;
     }];
     
     [alert addAction:home];
+    [alert addAction:save];
     [alert addAction:resume];
     [alert addAction:startOver];
 
     [self presentViewController:alert animated:YES completion:nil];
 }
+
 
 -(void)highScores
 {
@@ -808,6 +903,11 @@ CGPoint missileVector;
     bombPressed = true;
 }
 
+- (IBAction)shootReleased:(id)sender
+{
+    shootPressed = false;
+}
+
 -(void)moveBomb
 {
     self.bombVelocityY = self.bombVelocityY + 1.0;
@@ -829,7 +929,7 @@ CGPoint missileVector;
     {
         self.ammoImage.center = CGPointMake(offScreen, offScreen);
         ammoInFlight = false;
-        shootPressed = false;
+      //  shootPressed = false;
     }
 }
 
@@ -841,7 +941,7 @@ CGPoint missileVector;
     {
         self.ammoImage.center = CGPointMake(offScreen, offScreen);
         ammoInFlight = false;
-        shootPressed = false;
+      //  shootPressed = false;
     }
 }
 
