@@ -24,6 +24,9 @@
 		510759C21DFE181300018B0E /* chopperShort.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 510759C11DFE181300018B0E /* chopperShort.mp3 */; };
 		5107C9771DD2933000411FFA /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5107C9761DD2933000411FFA /* TutorialViewController.m */; };
 		5107C9851DD3746100411FFA /* tutorial.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5107C9841DD3746100411FFA /* tutorial.plist */; };
+		5108C7EE1E09812300FF782C /* portal.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5108C7ED1E09812300FF782C /* portal.mp3 */; };
+		5108C7F01E09828600FF782C /* bang.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5108C7EF1E09828600FF782C /* bang.mp3 */; };
+		5108C7F21E09C91D00FF782C /* atom.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5108C7F11E09C91D00FF782C /* atom.mp3 */; };
 		514D2A191DBEA59900A96118 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 514D2A181DBEA59900A96118 /* CollectionViewCell.m */; };
 		5157839F1DCA24BE00FB7A97 /* 2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5157837F1DCA24BE00FB7A97 /* 2.plist */; };
 		515783A01DCA24BE00FB7A97 /* 3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 515783801DCA24BE00FB7A97 /* 3.plist */; };
@@ -176,6 +179,9 @@
 		5107C9751DD2933000411FFA /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
 		5107C9761DD2933000411FFA /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
 		5107C9841DD3746100411FFA /* tutorial.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tutorial.plist; sourceTree = "<group>"; };
+		5108C7ED1E09812300FF782C /* portal.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = portal.mp3; sourceTree = "<group>"; };
+		5108C7EF1E09828600FF782C /* bang.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bang.mp3; sourceTree = "<group>"; };
+		5108C7F11E09C91D00FF782C /* atom.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = atom.mp3; sourceTree = "<group>"; };
 		514D2A171DBEA59900A96118 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		514D2A181DBEA59900A96118 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		5157837F1DCA24BE00FB7A97 /* 2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = 2.plist; sourceTree = "<group>"; };
@@ -360,6 +366,9 @@
 		110E80761B161B4000DF989C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5108C7F11E09C91D00FF782C /* atom.mp3 */,
+				5108C7EF1E09828600FF782C /* bang.mp3 */,
+				5108C7ED1E09812300FF782C /* portal.mp3 */,
 				510759C11DFE181300018B0E /* chopperShort.mp3 */,
 				110E80771B161B4000DF989C /* Info.plist */,
 				110E80781B161B4000DF989C /* main.m */,
@@ -712,6 +721,7 @@
 				51C66CE81DD4DFEB004070B1 /* 58.plist in Resources */,
 				51C66D121DD51308004070B1 /* 80.plist in Resources */,
 				515783AF1DCA24BE00FB7A97 /* 19.plist in Resources */,
+				5108C7EE1E09812300FF782C /* portal.mp3 in Resources */,
 				51C66CFD1DD50F7F004070B1 /* 69.plist in Resources */,
 				51C66CE61DD4DFEB004070B1 /* 56.plist in Resources */,
 				510759C21DFE181300018B0E /* chopperShort.mp3 in Resources */,
@@ -760,6 +770,7 @@
 				51C66CF91DD50F7F004070B1 /* 65.plist in Resources */,
 				51FD79251DDB633C00C676BE /* 95.plist in Resources */,
 				515783B01DCA24BE00FB7A97 /* 20.plist in Resources */,
+				5108C7F01E09828600FF782C /* bang.mp3 in Resources */,
 				51C66CEA1DD4DFEB004070B1 /* 60.plist in Resources */,
 				51C66CF51DD50F7F004070B1 /* 61.plist in Resources */,
 				51C66CE51DD4DFEB004070B1 /* 55.plist in Resources */,
@@ -768,6 +779,7 @@
 				51FD79261DDB633C00C676BE /* 96.plist in Resources */,
 				515783AC1DCA24BE00FB7A97 /* 16.plist in Resources */,
 				51C66CC81DD4D2BC004070B1 /* 44.plist in Resources */,
+				5108C7F21E09C91D00FF782C /* atom.mp3 in Resources */,
 				515783AE1DCA24BE00FB7A97 /* 18.plist in Resources */,
 				51FD792A1DDB633C00C676BE /* 100.plist in Resources */,
 				515783AD1DCA24BE00FB7A97 /* 17.plist in Resources */,

@@ -50,9 +50,9 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *fireballLabel;
 
-@property (retain, nonatomic) AVAudioPlayer *ammoPlayer;
-@property (retain, nonatomic) AVAudioPlayer *overPlayer;
-@property (retain, nonatomic) AVAudioPlayer *whooshPlayer;
+@property (retain, nonatomic) AVAudioPlayer *bangplayer;
+@property (retain, nonatomic) AVAudioPlayer *portalplayer;
+@property (retain, nonatomic) AVAudioPlayer *atomPlayer;
 
 @property (strong, nonatomic) NSTimer *gameTimer;
 @property (strong, nonatomic) NSTimer *ammoTimer;
@@ -153,13 +153,13 @@ CGPoint missileVector;
         [self.finishAnimation addObject:[UIImage imageNamed:[NSString stringWithFormat:@"fractal%d", i]]];
     }
     
-    // Ammo sound
+    // Explosion sound
     
     NSString* resourcePath = [[NSBundle mainBundle] resourcePath];
-    resourcePath = [resourcePath stringByAppendingString:@"/Cosmic.mp3"];
+    resourcePath = [resourcePath stringByAppendingString:@"/bang.mp3"];
     NSError* err;
     
-    self.ammoPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:resourcePath] error:&err];
+    self.bangplayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:resourcePath] error:&err];
     
     if(err)
     {
@@ -167,18 +167,18 @@ CGPoint missileVector;
     }
     else
     {
-        self.ammoPlayer.delegate = self;
-        self.ammoPlayer.numberOfLoops = 0;
-        self.ammoPlayer.currentTime = 0;
-        self.ammoPlayer.volume = 1.0;
+        self.bangplayer.delegate = self;
+        self.bangplayer.numberOfLoops = 0;
+        self.bangplayer.currentTime = 0;
+        self.bangplayer.volume = 1.0;
     }
     
-    // Game Over sound
+    // Portal sound
     
     resourcePath = [[NSBundle mainBundle] resourcePath];
-    resourcePath = [resourcePath stringByAppendingString:@"/gameOver.mp3"];
+    resourcePath = [resourcePath stringByAppendingString:@"/portal.mp3"];
     
-    self.overPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:resourcePath] error:&err];
+    self.portalplayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:resourcePath] error:&err];
     
     if(err)
     {
@@ -186,18 +186,18 @@ CGPoint missileVector;
     }
     else
     {
-        self.overPlayer.delegate = self;
-        self.overPlayer.numberOfLoops = 0;
-        self.overPlayer.currentTime = 0;
-        self.overPlayer.volume = 1.0;
+        self.portalplayer.delegate = self;
+        self.portalplayer.numberOfLoops = 0;
+        self.portalplayer.currentTime = 0;
+        self.portalplayer.volume = 1.0;
     }
     
     // Whoosh sound
     
     resourcePath = [[NSBundle mainBundle] resourcePath];
-    resourcePath = [resourcePath stringByAppendingString:@"/whoosh.mp3"];
+    resourcePath = [resourcePath stringByAppendingString:@"/atom.mp3"];
     
-    self.whooshPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:resourcePath] error:&err];
+    self.atomPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:resourcePath] error:&err];
     
     if(err)
     {
@@ -205,10 +205,10 @@ CGPoint missileVector;
     }
     else
     {
-        self.whooshPlayer.delegate = self;
-        self.whooshPlayer.numberOfLoops = 0;
-        self.whooshPlayer.currentTime = 0;
-        self.whooshPlayer.volume = 1.0;
+        self.atomPlayer.delegate = self;
+        self.atomPlayer.numberOfLoops = 0;
+        self.atomPlayer.currentTime = 0;
+        self.atomPlayer.volume = 1.0;
     }
     
     deviceScaler = 1;
@@ -264,7 +264,7 @@ CGPoint missileVector;
 
 - (IBAction)playButtonPressed:(id)sender
 {
-    lives = 3;
+    lives = 30;
     level = 1;
     score = 0;
     timePassed = 0;
@@ -282,12 +282,12 @@ CGPoint missileVector;
     [self updateScore:0];
     self.shieldLabel.text = [NSString stringWithFormat:@"Level: %d", level];
     [self updateLives:0];
-    self.character.center = CGPointMake(.2*screenWidth, (screenHeight - controlHeight)/2);
+    self.character.center = CGPointMake(.25*screenWidth, (screenHeight - controlHeight)/2);
     self.ammoImage.center = CGPointMake(offScreen, offScreen);
     self.bombImage.center = CGPointMake(offScreen, offScreen);
     [self resetMissile];
     self.enemyChopper.center = CGPointMake(screenWidth + 300, [self randomHeight]);
-    self.gateImage.frame = CGRectMake(skyWidth - 2*screenWidth, 0, 10, screenHeight - controlHeight);
+    self.gateImage.frame = CGRectMake(skyWidth - 1.5*screenWidth, 0, 10, screenHeight - controlHeight);
     self.skyBG.frame = CGRectMake(0, 0, skyWidth, screenHeight - controlHeight);
     self.finishLine.frame = CGRectMake(skyWidth - screenWidth, screenHeight/2 - 100, 200, 200);
     
@@ -557,6 +557,7 @@ CGPoint missileVector;
         {
             if(CGRectIntersectsRect(self.bombImage.frame, iv.frame))
             {
+                [self.bangplayer play];
                 [self updateScore:truckScore];
                 self.bombImage.center = CGPointMake(offScreen, offScreen);
                 bombPressed = false;
@@ -582,6 +583,7 @@ CGPoint missileVector;
         {
             if(CGRectIntersectsRect(self.character.frame, iv.frame))
             {
+                [self.atomPlayer play];
                 [self updateScore:atomScore];
                 atomCount++;
                 self.fireballLabel.text = [NSString stringWithFormat:@"%d", atomCount];
@@ -599,13 +601,14 @@ CGPoint missileVector;
 {
     if(CGRectIntersectsRect(self.gateImage.frame, self.character.frame))
     {
+        [self.bangplayer play];
+        [self updateLives:-lives];
         self.fireChopper.animationImages = self.fireAnimation;
         self.fireChopper.animationDuration = 1.0;
         self.fireChopper.animationRepeatCount = 1;
         [self.fireChopper startAnimating];
-        self.character.hidden = true;
         self.gateImage.frame = CGRectMake(skyWidth - 2*screenWidth, 0, 10, screenHeight - controlHeight);
-
+        self.character.hidden = true;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [self gameOver];
         });
@@ -617,6 +620,7 @@ CGPoint missileVector;
 {
     if(CGRectIntersectsRect(self.missileImage.frame, self.character.frame))
     {
+        [self.bangplayer play];
         [self updateLives:-1];
         [self resetMissile];
         shootPressed = false;
@@ -639,7 +643,7 @@ CGPoint missileVector;
 {
     if(CGRectIntersectsRect(self.character.frame, self.enemyChopper.frame))
     {
-        
+        [self.bangplayer play];
         [self updateLives:-1];
         [self updateScore:enemyChopperScore];
         shootPressed = false;
@@ -664,10 +668,10 @@ CGPoint missileVector;
 {
     if(CGRectIntersectsRect(self.ammoImage.frame, self.missileImage.frame))
     {
+        [self.bangplayer play];
         self.ammoImage.center = CGPointMake(offScreen, offScreen);
         [self resetMissile];
         ammoInFlight = false;
-      //  shootPressed = false;
         [self updateScore:missileScore];
         self.flameMissile.animationImages = self.fireAnimation;
         self.flameMissile.animationDuration = 1.0;
@@ -680,10 +684,10 @@ CGPoint missileVector;
 {
     if(CGRectIntersectsRect(self.ammoImage.frame, self.enemyChopper.frame))
     {
+        [self.bangplayer play];
         self.enemyChopper.center = CGPointMake(screenWidth + 300, [self randomHeight]);
         self.ammoImage.center = CGPointMake(offScreen, offScreen);
         ammoInFlight = false;
-      //  shootPressed = false;
         [self updateScore:enemyChopperScore];
         self.flameEnemyChopper.animationImages = self.fireAnimation;
         self.flameEnemyChopper.animationDuration = 1.0;
@@ -696,6 +700,7 @@ CGPoint missileVector;
 {
     if(CGRectIntersectsRect(self.bombImage.frame, self.enemyChopper.frame))
     {
+        [self.bangplayer play];
         self.enemyChopper.center = CGPointMake(screenWidth + 300, [self randomHeight]);
         self.bombImage.center = CGPointMake(offScreen, offScreen);
         bombPressed = false;
@@ -712,6 +717,7 @@ CGPoint missileVector;
 {
     if(CGRectIntersectsRect(self.bombImage.frame, self.missileImage.frame))
     {
+        [self.bangplayer play];
         self.bombImage.center = CGPointMake(offScreen, offScreen);
         [self resetMissile];
         bombPressed = false;
@@ -728,6 +734,7 @@ CGPoint missileVector;
 {
     if(CGRectIntersectsRect(self.character.frame, self.finishLine.frame))
     {
+        [self.portalplayer play];
         [self updateLives:1];
         [self updateScore:levelDoneScore];
         [self newLevel];
@@ -748,7 +755,7 @@ CGPoint missileVector;
     
     if(soundIsOn)
     {
-        [self.overPlayer play];
+       // [self.portalplayer play];
     }
     
     self.playButton.hidden = false;
