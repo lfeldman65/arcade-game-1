@@ -27,6 +27,7 @@
 		5108C7EE1E09812300FF782C /* portal.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5108C7ED1E09812300FF782C /* portal.mp3 */; };
 		5108C7F01E09828600FF782C /* bang.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5108C7EF1E09828600FF782C /* bang.mp3 */; };
 		5108C7F21E09C91D00FF782C /* atom.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5108C7F11E09C91D00FF782C /* atom.mp3 */; };
+		5110A24E1E0AF850001632BF /* shooting.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5110A24D1E0AF850001632BF /* shooting.mp3 */; };
 		514D2A191DBEA59900A96118 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 514D2A181DBEA59900A96118 /* CollectionViewCell.m */; };
 		5157839F1DCA24BE00FB7A97 /* 2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5157837F1DCA24BE00FB7A97 /* 2.plist */; };
 		515783A01DCA24BE00FB7A97 /* 3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 515783801DCA24BE00FB7A97 /* 3.plist */; };
@@ -129,6 +130,7 @@
 		51FD79281DDB633C00C676BE /* 98.plist in Resources */ = {isa = PBXBuildFile; fileRef = 51FD79141DDB633C00C676BE /* 98.plist */; };
 		51FD79291DDB633C00C676BE /* 99.plist in Resources */ = {isa = PBXBuildFile; fileRef = 51FD79151DDB633C00C676BE /* 99.plist */; };
 		51FD792A1DDB633C00C676BE /* 100.plist in Resources */ = {isa = PBXBuildFile; fileRef = 51FD79161DDB633C00C676BE /* 100.plist */; };
+		51FD8C221E0A01AB00DBE1E2 /* theEnd.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51FD8C211E0A01AB00DBE1E2 /* theEnd.mp3 */; };
 		673B2DF41DC6B55F00147D8F /* 7.plist in Resources */ = {isa = PBXBuildFile; fileRef = 673B2DF31DC6B55F00147D8F /* 7.plist */; };
 		673B2E051DC6B68100147D8F /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 673B2DFA1DC6B68100147D8F /* ioapi.c */; };
 		673B2E061DC6B68100147D8F /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 673B2DFC1DC6B68100147D8F /* mztools.c */; };
@@ -182,6 +184,7 @@
 		5108C7ED1E09812300FF782C /* portal.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = portal.mp3; sourceTree = "<group>"; };
 		5108C7EF1E09828600FF782C /* bang.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bang.mp3; sourceTree = "<group>"; };
 		5108C7F11E09C91D00FF782C /* atom.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = atom.mp3; sourceTree = "<group>"; };
+		5110A24D1E0AF850001632BF /* shooting.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shooting.mp3; sourceTree = "<group>"; };
 		514D2A171DBEA59900A96118 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		514D2A181DBEA59900A96118 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		5157837F1DCA24BE00FB7A97 /* 2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = 2.plist; sourceTree = "<group>"; };
@@ -287,6 +290,7 @@
 		51FD79141DDB633C00C676BE /* 98.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = 98.plist; sourceTree = "<group>"; };
 		51FD79151DDB633C00C676BE /* 99.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = 99.plist; sourceTree = "<group>"; };
 		51FD79161DDB633C00C676BE /* 100.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = 100.plist; sourceTree = "<group>"; };
+		51FD8C211E0A01AB00DBE1E2 /* theEnd.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = theEnd.mp3; sourceTree = "<group>"; };
 		673B2DF31DC6B55F00147D8F /* 7.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = 7.plist; path = puzzles/7.plist; sourceTree = "<group>"; };
 		673B2DF91DC6B68100147D8F /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		673B2DFA1DC6B68100147D8F /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
@@ -366,6 +370,8 @@
 		110E80761B161B4000DF989C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5110A24D1E0AF850001632BF /* shooting.mp3 */,
+				51FD8C211E0A01AB00DBE1E2 /* theEnd.mp3 */,
 				5108C7F11E09C91D00FF782C /* atom.mp3 */,
 				5108C7EF1E09828600FF782C /* bang.mp3 */,
 				5108C7ED1E09812300FF782C /* portal.mp3 */,
@@ -786,6 +792,7 @@
 				51C66CD51DD4DB5D004070B1 /* 42.plist in Resources */,
 				5157BF651DCA69ED00A73497 /* 39.plist in Resources */,
 				5107C9851DD3746100411FFA /* tutorial.plist in Resources */,
+				51FD8C221E0A01AB00DBE1E2 /* theEnd.mp3 in Resources */,
 				515783BE1DCA24BE00FB7A97 /* 34.plist in Resources */,
 				515783A41DCA24BE00FB7A97 /* 8.plist in Resources */,
 				51C66D141DD52523004070B1 /* iPad.storyboard in Resources */,
@@ -805,6 +812,7 @@
 				51C66CCE1DD4D2BC004070B1 /* 50.plist in Resources */,
 				51FD791A1DDB633C00C676BE /* 84.plist in Resources */,
 				51C66CE91DD4DFEB004070B1 /* 59.plist in Resources */,
+				5110A24E1E0AF850001632BF /* shooting.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,6 +7,14 @@
 //
 
 #import "GameViewController.h"
+#define charSpeedScale 0.25
+#define ammoSpeed 50.0
+#define enemySpeed 5.0
+#define missileSpeed 10
+#define skyWidth 10000
+#define gameTime .05
+#define offScreen -1000
+
 
 @interface GameViewController ()
 
@@ -18,50 +26,50 @@
 @property (retain, nonatomic) AVAudioPlayer *ambientPlayer;
 @property (strong, nonatomic) IBOutlet UILabel *highScoreLabel;
 
-@property (strong, nonatomic) IBOutlet UIImageView *shield1Image;
-@property (strong, nonatomic) IBOutlet UIImageView *alien2Image;
-@property (strong, nonatomic) IBOutlet UIImageView *alien3Image;
-@property (strong, nonatomic) IBOutlet UIImageView *alien4Image;
-@property (strong, nonatomic) IBOutlet UIImageView *fireball;
+@property (strong, nonatomic) IBOutlet UIImageView *ammoImage;
+@property (strong, nonatomic) IBOutlet UIImageView *gateImage;
+@property (strong, nonatomic) IBOutlet UIImageView *character;
+@property (strong, nonatomic) IBOutlet UIImageView *skyBG;
+@property (strong, nonatomic) IBOutlet UIImageView *finishLine;
+@property (strong, nonatomic) IBOutlet UIImageView *bombImage;
+@property (strong, nonatomic) IBOutlet UIImageView *enemyChopper;
+@property (strong, nonatomic) IBOutlet UIImageView *missileImage;
+@property (strong, nonatomic) IBOutlet UILabel *livesLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *atomImage;
+@property (strong, nonatomic) IBOutlet UIImageView *truckImage;
 
-@property (nonatomic) float alien1VelocityX;
-@property (nonatomic) float alien1VelocityY;
-@property (nonatomic) float alien2VelocityX;
-@property (nonatomic) float alien2VelocityY;
-@property (nonatomic) float alien3VelocityX;
-@property (nonatomic) float alien3VelocityY;
-@property (nonatomic) float alien4VelocityX;
-@property (nonatomic) float alien4VelocityY;
+@property (strong, nonatomic) UIImageView *fireChopper;
+@property (strong, nonatomic) UIImageView *flameMissile;
+@property (strong, nonatomic) UIImageView *flameEnemyChopper;
 
-@property (nonatomic) float shield1VelocityX;
-@property (nonatomic) float shield1VelocityY;
+@property (strong, nonatomic) IBOutlet UILabel *scoreLabel;
+@property (strong, nonatomic) IBOutlet UILabel *shieldLabel;
 
-@property (nonatomic) float fireballVelocityX;
-@property (nonatomic) float fireballVelocityY;
+@property (strong, nonatomic) IBOutlet UILabel *fireballLabel;
 
 
 @property (strong, nonatomic) NSTimer *gameTimer;
+@property (strong, nonatomic) NSTimer *ammoTimer;
+@property (strong, nonatomic) IBOutlet UIButton *playButton;
+
+@property (strong, nonatomic) NSMutableArray *fireAnimation;
+@property (strong, nonatomic) NSMutableArray *wallAnimation;
+@property (strong, nonatomic) NSMutableArray *finishAnimation;
+@property (strong, nonatomic) NSMutableArray *truckArray;
+@property (strong, nonatomic) NSMutableArray *fireArray;
+@property (strong, nonatomic) NSMutableArray *atomArray;
+
+
 
 @end
 
 @implementation GameViewController
 
-BOOL fireballInFlight2;
-BOOL alien1InFlight2;
-BOOL alien2InFlight2;
-BOOL alien3InFlight2;
-BOOL alien4InFlight2;
-BOOL shieldInFlight;
-int deviceScaler1;
-
-double timePassed2;
-
-
-CGPoint alien1Vector2, alien2Vector2, alien3Vector2, alien4Vector2, fireballVector2, shield1Vector2, fireballEnd2, shieldEnd;
-CGPoint alien1End2, alien2End2, alien3End2, alien4End2;
-
 double screenWidth2;
 double screenHeight2;
+double timePassed2;
+
+int deviceScaler2;
 
 
 - (void)viewDidLoad {
@@ -97,7 +105,7 @@ double screenHeight2;
         }
         self.ambientPlayer.numberOfLoops = -1;
         self.ambientPlayer.currentTime = 0;
-        self.ambientPlayer.volume = 0.1;
+        self.ambientPlayer.volume = 1.0;
     }
     
     // Game Center
@@ -112,33 +120,26 @@ double screenHeight2;
     
  //   [[GKLocalPlayer localPlayer] authenticateHandler];
     
-    deviceScaler1 = 1;
+    deviceScaler2 = 1;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
     {
-        deviceScaler1 = 2;
+        deviceScaler2 = 2;
     }
+    
+    self.skyBG.frame = CGRectMake(0, 0, skyWidth, screenHeight2);
+    self.character.center = CGPointMake(-300, [self randomHeight]);
+    self.enemyChopper.center = CGPointMake(screenWidth2 + 300, [self randomHeight]);
+    self.missileImage.center = CGPointMake(screenWidth2 + 300, [self randomHeight]);
+    self.atomImage.center = CGPointMake(screenWidth2 + 300, [self randomHeight]);
+    self.truckImage.center = CGPointMake(screenWidth2 + 300, .93*screenHeight2);
+
+
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     timePassed2 = 0;
-
-    self.alien2Image.center = CGPointMake([self randomWidth], [self randomHeight]);
-    self.alien3Image.center = CGPointMake([self randomWidth], [self randomHeight]);
-    self.alien4Image.center = CGPointMake([self randomWidth], [self randomHeight]);
-    
-    self.fireball.center = CGPointMake(-50, [self randomHeight]);
-
-    self.shield1Image.center = CGPointMake(screenWidth2 + 50, [self randomHeight]);
-    self.fireball.center = CGPointMake(-screenWidth2, [self randomHeight]);
-    
-    alien1InFlight2 = false;
-    alien2InFlight2 = false;
-    alien3InFlight2 = false;
-    alien4InFlight2 = false;
-    fireballInFlight2 = false;
-    shieldInFlight = false;
 
     NSNumber* sound = [[NSUserDefaults standardUserDefaults] objectForKey:@"soundOn"];
     BOOL soundOn = [sound boolValue];
@@ -179,80 +180,48 @@ double screenHeight2;
 {
     timePassed2 = timePassed2 + .05;
     
-    if(alien1InFlight2)
+    self.enemyChopper.center = CGPointMake(self.enemyChopper.center.x - 5.0, self.enemyChopper.center.y);
+    
+    if(self.enemyChopper.center.x < -300)
     {
-        double Mag = sqrt(alien1Vector2.x*alien1Vector2.x + alien1Vector2.y*alien1Vector2.y);
-        
-        if (Mag < 10)
-        {
-            alien1InFlight2 = false;
-        }
-        
-        self.alien1VelocityX = 4*deviceScaler1*alien1Vector2.x/Mag;
-        self.alien1VelocityY = 4*deviceScaler1*alien1Vector2.y/Mag;
-        
-    } else {
-        
-        alien1End2.x = screenWidth2 + 50;
-        alien1End2.y = [self randomHeight];
-        alien1InFlight2 = true;
+        self.enemyChopper.center = CGPointMake(screenWidth2 + 300, [self randomHeight]);
     }
     
-    if(fireballInFlight2)
+    self.missileImage.center = CGPointMake(self.missileImage.center.x - 10.0, self.missileImage.center.y);
+    
+    if(self.missileImage.center.x < -300)
     {
-        fireballVector2.x = fireballEnd2.x -  self.fireball.center.x;
-        fireballVector2.y = fireballEnd2.y - self.fireball.center.y;
-        double Mag = sqrt(fireballVector2.x*fireballVector2.x + fireballVector2.y*fireballVector2.y);
-        self.fireball.transform = CGAffineTransformMakeRotation(5*timePassed2);
-        
-        if (Mag < 10)
-        {
-            fireballInFlight2 = false;
-            self.fireball.center = CGPointMake(-50, [self randomHeight]);
-        }
-        
-        self.fireballVelocityX = 4*deviceScaler1*fireballVector2.x/Mag;
-        self.fireballVelocityY = 4*deviceScaler1*fireballVector2.y/Mag;
-        self.fireball.center = CGPointMake(self.fireball.center.x + self.fireballVelocityX, self.fireball.center.y + self.fireballVelocityY);
-        
-    } else {
-        
-        fireballEnd2.x = screenWidth2 + 50;
-        fireballEnd2.y = [self randomHeight];
-        fireballInFlight2 = true;
+        self.missileImage.center = CGPointMake(screenWidth2 + 300, [self randomHeight]);
     }
     
-    if(shieldInFlight)
+    self.atomImage.center = CGPointMake(self.atomImage.center.x - 1.0, self.atomImage.center.y);
+    self.atomImage.transform = CGAffineTransformMakeRotation(4*timePassed2);
+    
+    if(self.atomImage.center.x < -300)
     {
-        shield1Vector2.x = shieldEnd.x -  self.shield1Image.center.x;
-        shield1Vector2.y = shieldEnd.y - self.shield1Image.center.y;
-        double Mag = sqrt(shield1Vector2.x*shield1Vector2.x + shield1Vector2.y*shield1Vector2.y);
-        self.shield1Image.transform = CGAffineTransformMakeRotation(5*timePassed2);
-        
-        if (Mag < 10)
-        {
-            shieldInFlight = false;
-            self.shield1Image.center = CGPointMake(screenWidth2 + 50, [self randomHeight]);
-        }
-        
-        self.shield1VelocityX = 4*deviceScaler1*shield1Vector2.x/Mag;
-        self.shield1VelocityY = 4*deviceScaler1*shield1Vector2.y/Mag;
-        self.shield1Image.center = CGPointMake(self.shield1Image.center.x + self.shield1VelocityX, self.shield1Image.center.y + self.shield1VelocityY);
-        
-    } else {
-        
-        shieldEnd.x = -50;
-        shieldEnd.y = [self randomHeight];
-        shieldInFlight = true;
+        self.atomImage.center = CGPointMake(self.atomImage.center.x + 300, [self randomHeight]);
     }
-
+    
+    self.truckImage.center = CGPointMake(self.truckImage.center.x - 4.0, self.truckImage.center.y);
+    
+    if(self.truckImage.center.x < -300)
+    {
+        self.truckImage.center = CGPointMake(screenWidth2 + 300, .93*screenHeight2);
+    }
+    
+    self.character.center = CGPointMake(self.character.center.x + 5.0, self.character.center.y);
+    
+    if(self.character.center.x > screenWidth2 + 300)
+    {
+        self.character.center = CGPointMake(-300, [self randomHeight]);
+    }
 }
 
 
 -(int)randomHeight
 {
-    int minY = 0;
-    int maxY = screenHeight2 - 50;
+    int minY = .4*screenHeight2;
+    int maxY = .85*screenHeight2;;
     int rangeY = maxY - minY;
     return (arc4random() % rangeY) + minY;
 }
