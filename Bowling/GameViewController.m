@@ -37,6 +37,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *livesLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *atomImage;
 @property (strong, nonatomic) IBOutlet UIImageView *truckImage;
+@property (strong, nonatomic) IBOutlet UIImageView *parachute;
 
 @property (strong, nonatomic) UIImageView *fireChopper;
 @property (strong, nonatomic) UIImageView *flameMissile;
@@ -110,7 +111,7 @@ int deviceScaler2;
     
     // Game Center
     
- //   [[GameCenterManager sharedManager] setDelegate:self];
+    [[GameCenterManager sharedManager] setDelegate:self];
     BOOL available = [[GameCenterManager sharedManager] checkGameCenterAvailability];
     if (available) {
         NSLog(@"available");
@@ -118,7 +119,7 @@ int deviceScaler2;
         NSLog(@"not available");
     }
     
- //   [[GKLocalPlayer localPlayer] authenticateHandler];
+    [[GKLocalPlayer localPlayer] authenticateHandler];
     
     deviceScaler2 = 1;
     
@@ -133,7 +134,7 @@ int deviceScaler2;
     self.missileImage.center = CGPointMake(screenWidth2 + 300, [self randomHeight]);
     self.atomImage.center = CGPointMake(screenWidth2 + 300, [self randomHeight]);
     self.truckImage.center = CGPointMake(screenWidth2 + 300, .93*screenHeight2);
-
+    self.parachute.center = CGPointMake([self randomWidth], -100.0);
 
 }
 
@@ -215,6 +216,13 @@ int deviceScaler2;
     {
         self.character.center = CGPointMake(-300, [self randomHeight]);
     }
+    
+     self.parachute.center = CGPointMake(self.parachute.center.x, self.parachute.center.y + 2.0*deviceScaler2);
+    
+    if(self.parachute.center.y > screenHeight2 + self.parachute.frame.size.height/2)
+    {
+        self.parachute.center = CGPointMake([self randomWidth], -100.0);
+    }
 }
 
 
@@ -228,8 +236,8 @@ int deviceScaler2;
 
 -(int)randomWidth
 {
-    int minY = 0;
-    int maxY = screenWidth2;
+    int minY = .1*screenWidth2;
+    int maxY = .9*screenWidth2;
     int rangeY = maxY - minY;
     return (arc4random() % rangeY) + minY;
 }
@@ -282,7 +290,7 @@ int deviceScaler2;
         
     } else {
         
-     //   NSLog(@"error here1");
+        NSLog(@"error here1");
     }
     
 }

@@ -9,15 +9,16 @@
 #import "PlayViewController.h"
 
 #define charSpeedScale 0.25
-#define ammoSpeed 50.0
+#define ammoSpeed 60.0
 #define enemySpeed 5.0
 #define missileSpeed 10
 #define controlHeight 130.0
-#define bottomAchieve 20000
+#define bottomAchieve 30000
 #define skyWidth 10000
 #define truckScore 250
 #define atomScore 500
 #define missileScore 1000
+#define parachuteScore 100
 #define enemyChopperScore 500
 #define levelDoneScore 10000
 #define gameTime .05
@@ -70,6 +71,7 @@
 @property (strong, nonatomic) NSMutableArray *truckArray;
 @property (strong, nonatomic) NSMutableArray *fireArray;
 @property (strong, nonatomic) NSMutableArray *atomArray;
+@property (strong, nonatomic) IBOutlet UIImageView *parachuteImage;
 
 
 - (IBAction)shootPressed:(id)sender;
@@ -233,7 +235,7 @@ CGPoint missileVector;
     // Shooting Sound
     
     resourcePath = [[NSBundle mainBundle] resourcePath];
-    resourcePath = [resourcePath stringByAppendingString:@"/shooting.mp3"];
+    resourcePath = [resourcePath stringByAppendingString:@"/shooting2.mp3"];
     
     self.shootingPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:resourcePath] error:&err];
     
@@ -343,6 +345,8 @@ CGPoint missileVector;
     self.skyBG.frame = CGRectMake(0, 0, skyWidth*deviceScaler, screenHeight - controlHeight);
     self.finishLine.frame = CGRectMake(skyWidth*deviceScaler - screenWidth, screenHeight/2 - 100*deviceScaler, 150*deviceScaler, 150*deviceScaler);
     self.portalLabel.center = CGPointMake(self.finishLine.center.x, self.finishLine.center.y - self.finishLine.frame.size.height/2 - 15.0*deviceScaler);
+    
+    self.parachuteImage.center = CGPointMake(screenWidth, -100);
 
     self.finishLine.layer.cornerRadius =.5*self.finishLine.layer.frame.size.height;
     self.finishLine.layer.masksToBounds = YES;
@@ -351,7 +355,7 @@ CGPoint missileVector;
     self.fireArray = [NSMutableArray new];
     self.atomArray = [NSMutableArray new];
     
-    int truckXDelta = (skyWidth*deviceScaler)/numTrucks;
+    int truckXDelta = (skyWidth*deviceScaler)/numTrucks - 50;
     
     for(int i = 1; i <= numTrucks; i++)
     {
@@ -469,9 +473,14 @@ CGPoint missileVector;
 
     [self collisionBetweenBombAndTruck];
     
-    if(level >= 3)
+    if(level >= 2)
     {
         [self moveEnemyChopper];
+    }
+    
+    if(level >= 3)
+    {
+        [self moveParachute];
     }
     
     if([self trucksToRightOfChopper] >= 2)
@@ -483,6 +492,7 @@ CGPoint missileVector;
         self.missileImage.center = CGPointMake(-offScreen, offScreen);
     }
     
+    [self collisionBetweenCharAndChute];
     [self collisionBetweenMissileAndChopper];
     [self collisionBetweenAmmoAndEnemyChopper];
     [self collisionBetweenAmmoAndMissile];
@@ -535,6 +545,15 @@ CGPoint missileVector;
     }
 }
 
+-(void)moveParachute
+{
+    self.parachuteImage.center = CGPointMake(self.parachuteImage.center.x - self.charVelocityX, self.parachuteImage.center.y + 2.0*deviceScaler);
+    
+    if(self.parachuteImage.center.y > screenHeight - controlHeight + self.parachuteImage.frame.size.height/2)
+    {
+        self.parachuteImage.center = CGPointMake(screenWidth, -100.0);
+    }
+}
 
 -(void)moveTrucks
 {
@@ -678,6 +697,17 @@ CGPoint missileVector;
         });
     }
 }
+
+
+-(void)collisionBetweenCharAndChute
+{
+    if(CGRectIntersectsRect(self.character.frame, self.parachuteImage.frame))
+    {
+        [self updateScore:parachuteScore];
+        self.parachuteImage.center = CGPointMake(screenWidth, -100);
+    }
+}
+
 
 
 -(void)collisionBetweenMissileAndChopper
@@ -903,8 +933,8 @@ CGPoint missileVector;
 
 -(int)randomWidth
 {
-    int minX = 0;
-    int maxX = screenWidth;
+    int minX = .1*screenWidth;
+    int maxX = .9*screenWidth;
     int range = maxX - minX;
     return (arc4random() % range) + minX;
 }

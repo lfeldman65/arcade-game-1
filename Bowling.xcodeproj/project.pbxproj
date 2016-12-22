@@ -28,6 +28,7 @@
 		5108C7F01E09828600FF782C /* bang.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5108C7EF1E09828600FF782C /* bang.mp3 */; };
 		5108C7F21E09C91D00FF782C /* atom.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5108C7F11E09C91D00FF782C /* atom.mp3 */; };
 		5110A24E1E0AF850001632BF /* shooting.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5110A24D1E0AF850001632BF /* shooting.mp3 */; };
+		5110A2501E0C2342001632BF /* shooting2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5110A24F1E0C2342001632BF /* shooting2.mp3 */; };
 		514D2A191DBEA59900A96118 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 514D2A181DBEA59900A96118 /* CollectionViewCell.m */; };
 		5157839F1DCA24BE00FB7A97 /* 2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5157837F1DCA24BE00FB7A97 /* 2.plist */; };
 		515783A01DCA24BE00FB7A97 /* 3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 515783801DCA24BE00FB7A97 /* 3.plist */; };
@@ -185,6 +186,7 @@
 		5108C7EF1E09828600FF782C /* bang.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bang.mp3; sourceTree = "<group>"; };
 		5108C7F11E09C91D00FF782C /* atom.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = atom.mp3; sourceTree = "<group>"; };
 		5110A24D1E0AF850001632BF /* shooting.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shooting.mp3; sourceTree = "<group>"; };
+		5110A24F1E0C2342001632BF /* shooting2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shooting2.mp3; sourceTree = "<group>"; };
 		514D2A171DBEA59900A96118 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		514D2A181DBEA59900A96118 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		5157837F1DCA24BE00FB7A97 /* 2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = 2.plist; sourceTree = "<group>"; };
@@ -370,6 +372,7 @@
 		110E80761B161B4000DF989C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5110A24F1E0C2342001632BF /* shooting2.mp3 */,
 				5110A24D1E0AF850001632BF /* shooting.mp3 */,
 				51FD8C211E0A01AB00DBE1E2 /* theEnd.mp3 */,
 				5108C7F11E09C91D00FF782C /* atom.mp3 */,
@@ -758,6 +761,7 @@
 				51FD79241DDB633C00C676BE /* 94.plist in Resources */,
 				515783BD1DCA24BE00FB7A97 /* 33.plist in Resources */,
 				51C66CF61DD50F7F004070B1 /* 62.plist in Resources */,
+				5110A2501E0C2342001632BF /* shooting2.mp3 in Resources */,
 				515783A71DCA24BE00FB7A97 /* 11.plist in Resources */,
 				51FD79171DDB633C00C676BE /* 81.plist in Resources */,
 				51FD791E1DDB633C00C676BE /* 88.plist in Resources */,

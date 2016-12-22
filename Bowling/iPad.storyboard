@@ -125,6 +125,10 @@
                                     <constraint firstAttribute="height" constant="250" id="rkw-bE-enr"/>
                                 </constraints>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="parachute" translatesAutoresizingMaskIntoConstraints="NO" id="ASa-Na-Iih">
+                                <rect key="frame" x="692" y="444" width="80" height="106"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="High Score: 0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IbZ-nf-EEc">
                                 <rect key="frame" x="692" y="48" width="300" height="36"/>
                                 <constraints>
@@ -162,6 +166,7 @@
                         <outlet property="enemyChopper" destination="bP1-l1-U0c" id="JhE-Ng-S4I"/>
                         <outlet property="highScoreLabel" destination="IbZ-nf-EEc" id="D77-6K-UUf"/>
                         <outlet property="missileImage" destination="bSg-fH-inD" id="fu6-TY-7jb"/>
+                        <outlet property="parachute" destination="ASa-Na-Iih" id="tnZ-IQ-u7a"/>
                         <outlet property="skyBG" destination="vA7-j8-jfc" id="bJd-v7-fqb"/>
                         <outlet property="soundSwitch" destination="Hja-pQ-1sT" id="oIe-fw-8cD"/>
                         <outlet property="truckImage" destination="uem-Gm-UwO" id="dHV-ny-hTF"/>
@@ -348,6 +353,10 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="parachute" translatesAutoresizingMaskIntoConstraints="NO" id="X8F-ym-uy9">
+                                <rect key="frame" x="517" y="389" width="80" height="106"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="enemyChopper" translatesAutoresizingMaskIntoConstraints="NO" id="rgR-ZN-S1h">
                                 <rect key="frame" x="227" y="129" width="246" height="106"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -393,6 +402,7 @@
                         <outlet property="leftView" destination="gR9-Nf-u2L" id="hAr-h9-j7k"/>
                         <outlet property="livesLabel" destination="Ke5-Ho-LbN" id="DYf-tM-xSv"/>
                         <outlet property="missileImage" destination="njK-GF-qhe" id="df9-mc-YDW"/>
+                        <outlet property="parachuteImage" destination="X8F-ym-uy9" id="DRu-Zh-WYU"/>
                         <outlet property="playButton" destination="9Hf-y0-cUl" id="CKt-fw-39f"/>
                         <outlet property="portalLabel" destination="MYb-C5-84k" id="fP8-su-hH7"/>
                         <outlet property="scoreLabel" destination="gWU-T9-m4z" id="gvQ-47-499"/>
@@ -439,6 +449,12 @@
                                     <constraint firstAttribute="height" constant="70" id="ovP-Iq-j15"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Gun" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gm7-zx-dBx">
+                                <rect key="frame" x="48" y="187" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="compass" translatesAutoresizingMaskIntoConstraints="NO" id="Z6o-gP-T33">
                                 <rect key="frame" x="40" y="72" width="60" height="60"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -586,9 +602,13 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Gun" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gm7-zx-dBx">
-                                <rect key="frame" x="48" y="187" width="42" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="And a few other surprises!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="neu-De-lrZ">
+                                <rect key="frame" x="423" y="735" width="200" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="Ch5-7m-GL9"/>
+                                    <constraint firstAttribute="height" constant="20" id="kWt-8r-XtK"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -607,6 +627,7 @@
                             <constraint firstItem="RYf-DB-Geb" firstAttribute="centerX" secondItem="itc-Vt-Git" secondAttribute="centerX" id="LQY-gr-ECO"/>
                             <constraint firstItem="oCR-KV-dW3" firstAttribute="leading" secondItem="jgx-hh-0K4" secondAttribute="leading" constant="5" id="LtK-Bg-eQ2"/>
                             <constraint firstItem="CR9-2f-bQT" firstAttribute="centerY" secondItem="o0w-1r-gFd" secondAttribute="centerY" id="NDf-ug-hBo"/>
+                            <constraint firstItem="neu-De-lrZ" firstAttribute="centerX" secondItem="gNP-xV-AuN" secondAttribute="centerX" constant="11" id="NrE-lg-oXu"/>
                             <constraint firstItem="Z6o-gP-T33" firstAttribute="centerX" secondItem="HMb-H7-V4D" secondAttribute="centerX" id="QKB-jq-xwF"/>
                             <constraint firstItem="xs9-Ou-Ewk" firstAttribute="top" secondItem="Z6o-gP-T33" secondAttribute="bottom" constant="30" id="R1C-L8-VER"/>
                             <constraint firstItem="yfs-Rv-Jk0" firstAttribute="top" secondItem="qAs-vI-3yI" secondAttribute="bottom" id="RXG-6l-7Pv"/>
@@ -630,6 +651,7 @@
                             <constraint firstItem="xs9-Ou-Ewk" firstAttribute="centerX" secondItem="gm7-zx-dBx" secondAttribute="centerX" id="vYI-Ow-Pt9"/>
                             <constraint firstItem="RYf-DB-Geb" firstAttribute="centerY" secondItem="oCR-KV-dW3" secondAttribute="centerY" id="vZi-mM-HyR"/>
                             <constraint firstItem="HO0-ms-kvb" firstAttribute="centerY" secondItem="dYU-KG-bLX" secondAttribute="centerY" constant="1" id="vgQ-s3-3NV"/>
+                            <constraint firstItem="neu-De-lrZ" firstAttribute="top" secondItem="jgx-hh-0K4" secondAttribute="bottom" constant="39" id="wY2-CF-Qhb"/>
                             <constraint firstItem="GJf-4j-7gU" firstAttribute="leading" secondItem="dYU-KG-bLX" secondAttribute="leading" id="xUN-Je-VQX"/>
                             <constraint firstItem="o0w-1r-gFd" firstAttribute="leading" secondItem="8iH-WH-aac" secondAttribute="leading" constant="1" id="xbL-9q-cjB"/>
                             <constraint firstItem="F8g-lq-uMR" firstAttribute="centerX" secondItem="GMh-Nu-8wg" secondAttribute="centerX" id="xcw-DT-qtQ"/>
@@ -673,6 +695,7 @@
         <image name="enemyChopper" width="488" height="159"/>
         <image name="fractal1" width="238" height="308"/>
         <image name="missile" width="960" height="480"/>
+        <image name="parachute" width="646" height="720"/>
         <image name="red" width="251" height="250"/>
         <image name="title" width="986" height="461"/>
         <image name="yellow" width="252" height="250"/>
