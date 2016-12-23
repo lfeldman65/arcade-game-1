@@ -1007,7 +1007,7 @@ CGPoint missileVector;
     
     if(level > currentHLInt)
     {
-        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:score] forKey:@"highLevel"];
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:level] forKey:@"highLevel"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [[GameCenterManager sharedManager] saveAndReportScore:score leaderboard:@"com.lfeldman.chopper.level" sortOrder:GameCenterSortOrderHighToLow];
