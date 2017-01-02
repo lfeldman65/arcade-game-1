@@ -1010,9 +1010,8 @@ CGPoint missileVector;
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:level] forKey:@"highLevel"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        [[GameCenterManager sharedManager] saveAndReportScore:score leaderboard:@"com.lfeldman.chopper.level" sortOrder:GameCenterSortOrderHighToLow];
+        [[GameCenterManager sharedManager] saveAndReportScore:level leaderboard:@"com.lfeldman.chopper.level" sortOrder:GameCenterSortOrderHighToLow];
     }
-
     
     if(score >= 3*bottomAchieve)
     {
