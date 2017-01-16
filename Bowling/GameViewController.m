@@ -56,6 +56,7 @@
 @property (strong, nonatomic) NSMutableArray *fireAnimation;
 @property (strong, nonatomic) NSMutableArray *wallAnimation;
 @property (strong, nonatomic) NSMutableArray *finishAnimation;
+@property (strong, nonatomic) NSMutableArray *chopAnimation;
 @property (strong, nonatomic) NSMutableArray *truckArray;
 @property (strong, nonatomic) NSMutableArray *fireArray;
 @property (strong, nonatomic) NSMutableArray *atomArray;
@@ -76,6 +77,19 @@ int deviceScaler2;
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    
+    self.chopAnimation = [[NSMutableArray alloc] init];
+    
+    for (int i = 1; i <= 2 ; i++)
+    {
+        [self.chopAnimation addObject:[UIImage imageNamed:[NSString stringWithFormat:@"chop%d", i]]];
+    }
+
+    
+    self.enemyChopper.animationImages = self.chopAnimation;
+    self.enemyChopper.animationDuration = 0.2;
+    self.enemyChopper.animationRepeatCount = 0;
+    [self.enemyChopper startAnimating];
     
     screenWidth2 = self.view.frame.size.width;
     screenHeight2 = self.view.frame.size.height;
